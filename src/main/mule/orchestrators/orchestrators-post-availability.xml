@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="orchestrators-post-avilability" doc:id="9de8a181-03dc-4282-8646-dec20083d7c8" >
+		<logger level="INFO" doc:name="Payload" doc:id="e4513dfc-360a-4716-a4d6-0d3794b0253e" message="#[payload]"/>
+		<flow-ref doc:name="Call clients-post-process-albatros-availability-api" doc:id="e6a77698-76e2-4ba0-962d-036dc0381695" name="clients-post-process-albatros-availability-api"/>
+	</sub-flow>
+</mule>
