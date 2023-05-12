@@ -124,13 +124,15 @@ output application/json
         </error-handler>
     </flow>
     <flow name="post:\shipments\article:application\json:traxion-albatros-api-config">
-<!-- [STUDIO:"Call to orchestrators-update-article"]        <flow-ref doc:name="Call to orchestrators-update-article" doc:id="f91f9db5-5c62-4684-aab1-615a894b18f0" name="orchestrators-update-article"/> [STUDIO] -->
-		<logger level="INFO" doc:name="Logger" doc:id="f6fe7d48-e5b5-4d69-b47b-ed13d686b3ed" message="#[payload]"/>
-		<ee:transform>
+		<set-variable value="#[attributes.queryParams.customer_name]" doc:name="customer name" doc:id="5924b3ab-62e3-40ca-9f9c-0465dcce8ffe" variableName="customerName" />
+		<set-variable value="#[attributes.queryParams.system_request]" doc:name="system_request" doc:id="c0b2c02b-9454-4458-9c04-2a720d39917b" variableName="systemRequest" />
+		<flow-ref doc:name="Call to orchestrators-update-article" doc:id="f91f9db5-5c62-4684-aab1-615a894b18f0" name="orchestrators-update-article"/>
+		<logger level="INFO" doc:name="payload" doc:id="f6fe7d48-e5b5-4d69-b47b-ed13d686b3ed" message="#[payload]"/>
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   traxion_response: {
     completed_succesfully: "true",
@@ -141,20 +143,23 @@ output application/json
   }
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
     <flow name="post:\shipments\availability:application\json:traxion-albatros-api-config">
-<!-- [STUDIO:"Call to orchestrators-post-avilability"]        <flow-ref doc:name="Call to orchestrators-post-avilability" doc:id="ea680d56-d3cf-4c42-bab1-bbcc64576ef5" name="orchestrators-post-avilability"/> [STUDIO] -->
-		<ee:transform>
+		<set-variable value="#[attributes.queryParams.customer_name]" doc:name="customer name" doc:id="be1d0801-ef27-4f89-a4b0-2826b3c52a31" variableName="customerName" />
+		<set-variable value="#[attributes.queryParams.system_request]" doc:name="system_request" doc:id="38b3d7f1-3bdb-4d30-81ad-2bdfbef6691c" variableName="systemRequest" />
+		<flow-ref doc:name="Call to orchestrators-post-avilability" doc:id="ea680d56-d3cf-4c42-bab1-bbcc64576ef5" name="orchestrators-post-avilability"/>
+		<logger level="INFO" doc:name="payload" doc:id="ce6a2f8c-818b-417e-af0b-53dc9cffc05b" message="#[payload]" />
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   skus: [
     {
-      sku: "12345asdas",
-      availability: 500,
+      sku: "010000010300",
+      availability: 348,
       package_key: true,
       quantity_pieces_package: [
         20, 
@@ -163,23 +168,32 @@ output application/json
       ]
     }, 
     {
-      sku: "12344asdas",
-      availability: 500,
+      sku: "010000010600",
+      availability: 245,
+      package_key: false,
+      quantity_pieces_package: []
+    },
+    {
+      sku: "010000010400",
+      availability: 1420,
       package_key: false,
       quantity_pieces_package: []
     }
   ]
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
     <flow name="post:\shipments\delivery_certification:application\json:traxion-albatros-api-config">
-<!-- [STUDIO:"Call to orchestrators-post-delivery-certification"]        <flow-ref doc:name="Call to orchestrators-post-delivery-certification" doc:id="ff132753-73eb-43f6-af93-e443ba61cc64" name="orchestrators-post-delivery-certification"/> [STUDIO] -->
-		<ee:transform>
+<set-variable value="#[attributes.queryParams.customer_name]" doc:name="customer name" doc:id="81ee4e2e-43cc-4e27-b71d-912af89ca112" variableName="customerName" />
+		<set-variable value="#[attributes.queryParams.system_request]" doc:name="system_request" doc:id="2fc077fe-e1ef-4939-a525-5bda24e7ebb3" variableName="systemRequest" />
+		        <flow-ref doc:name="Call to orchestrators-post-delivery-certification" doc:id="ff132753-73eb-43f6-af93-e443ba61cc64" name="orchestrators-post-delivery-certification"/>
+		<logger level="INFO" doc:name="payload" doc:id="4f3bf826-1f63-4ad2-bfb9-d9c2d133d277" message="#[payload]" />
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
     "traxion_response": {
         "completed_succesfully": "true",
@@ -190,15 +204,18 @@ output application/json
     }
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
     <flow name="post:\shipments\inventory_assignment:application\xml:traxion-albatros-api-config">
-<!-- [STUDIO:"Call to orchestrators-post-inventory-assignment"]        <flow-ref doc:name="Call to orchestrators-post-inventory-assignment" doc:id="0a88e474-1963-43fe-ac77-c3444fe2506a" name="orchestrators-post-inventory-assignment"/> [STUDIO] -->
-		<ee:transform doc:name="Transform Message" doc:id="c2dae5c4-35ae-4381-8324-0acc1afd3e16" >
+<set-variable value="#[attributes.queryParams.customer_name]" doc:name="customer name" doc:id="cdf7e18a-1b66-47b6-b6e3-89a572b2f7e6" variableName="customerName" />
+		<set-variable value="#[attributes.queryParams.system_request]" doc:name="system_request" doc:id="403eeb43-da03-42d2-8efa-ac3a8f514cc0" variableName="systemRequest" />
+		        <flow-ref doc:name="Call to orchestrators-post-inventory-assignment" doc:id="0a88e474-1963-43fe-ac77-c3444fe2506a" name="orchestrators-post-inventory-assignment"/>
+		<logger level="INFO" doc:name="payload" doc:id="14f0461a-dcf5-4c1d-a5a0-8136d12c0a70" message="#[payload]" />
+<!-- [STUDIO:"Transform Message"]		<ee:transform doc:name="Transform Message" doc:id="c2dae5c4-35ae-4381-8324-0acc1afd3e16" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   traxion_response: {
     completed_succesfully: "true",
@@ -209,15 +226,17 @@ output application/json
   }
 }]]></ee:set-payload>
 			</ee:message>
-		</ee:transform>
+		</ee:transform> [STUDIO] -->
     </flow>
     <flow name="post:\shipments\order:application\json:traxion-albatros-api-config">
-<!-- [STUDIO:"Call to orchestrators-post-order"]        <flow-ref doc:name="Call to orchestrators-post-order" doc:id="bac54914-2a7f-4ee4-8fd3-2c14514d4bb1" name="orchestrators-post-order"/> [STUDIO] -->
-		<ee:transform>
+		<set-variable value="#[attributes.queryParams.customer_name]" doc:name="customer name" doc:id="a1b31782-0395-4538-a129-2ed22e73eb2d" variableName="customerName" />
+		        <flow-ref doc:name="Call to orchestrators-post-order" doc:id="bac54914-2a7f-4ee4-8fd3-2c14514d4bb1" name="orchestrators-post-order"/>
+		<logger level="INFO" doc:name="payload" doc:id="2777d69b-c465-4f08-98ad-4c2b63542f66" message="#[payload]" />
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   traxion_response: {
     completed_succesfully: "true",
@@ -228,14 +247,18 @@ output application/json
   }
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
     <flow name="post:\shipments\volumetry:application\json:traxion-albatros-api-config">
-        <ee:transform>
+<set-variable value="#[attributes.queryParams.system_request]" doc:name="system_request" doc:id="d0ae3e03-2c98-43fb-a22b-f8238bef7345" variableName="systemRequest" />
+		<set-variable value="#[attributes.queryParams.customer_name]" doc:name="customer name" doc:id="8546552e-f616-4fe2-bbb8-29b24eef913b" variableName="customerName" />
+		        <flow-ref doc:name="Call to orchestrators-post-volumetry" doc:id="59cdf043-f3ac-4631-a3c4-1bb9e5b02fce" name="orchestrators-post-volumetry"/>
+		<logger level="INFO" doc:name="payload" doc:id="f098082c-9bda-4bfa-b12c-48d2182d6e43" message="#[payload]" />
+<!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   "total volume": 1500,
   skus: [
@@ -254,14 +277,18 @@ output application/json
   ]
 }]]></ee:set-payload>
             </ee:message>
-        </ee:transform>
+        </ee:transform> [STUDIO] -->
     </flow>
     <flow name="post:\shipments\warehouse_output:application\xml:traxion-albatros-api-config">
-        <ee:transform doc:name="Transform Message1" doc:id="0173292e-31f2-4712-903e-bac3271b7f6d" >
+<set-variable value="#[attributes.queryParams.system_request]" doc:name="system_request" doc:id="80228c47-7571-4976-91cd-33a3cb7a82fb" variableName="systemRequest" />
+		<set-variable value="#[attributes.queryParams.customer_name]" doc:name="customer name" doc:id="d546288e-f7c5-4c73-9c9e-25246f985542" variableName="customerName" />
+				<flow-ref doc:name="Call to orchestrators-post-warehouse-output" doc:id="41e8627c-f84a-4486-92d9-34e9f7ddcbbf" name="orchestrators-post-warehouse-output"/>
+		<logger level="INFO" doc:name="payload" doc:id="98efdf53-50a5-48ce-bb88-a23f3687afd1" message="#[payload]" />
+<!-- [STUDIO:"Transform Message1"]		<ee:transform doc:name="Transform Message1" doc:id="0173292e-31f2-4712-903e-bac3271b7f6d" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
   traxion_response: {
     completed_succesfully: "true",
@@ -272,6 +299,6 @@ output application/json
   }
 }]]></ee:set-payload>
 			</ee:message>
-		</ee:transform>
+		</ee:transform> [STUDIO] -->
     </flow>
 </mule>

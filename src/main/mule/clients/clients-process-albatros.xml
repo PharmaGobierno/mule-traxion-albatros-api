@@ -4,9 +4,6 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<http:request-config name="HTTP_request_process_albatros" doc:name="HTTP Request configuration" doc:id="580baf4d-bf41-49df-84e9-e80b21e80466" responseTimeout="${client.process.albatros.api.https.response.timeout}">
-		<http:request-connection protocol="HTTPS" host="${client.process.albatros.api.https.host}" port="${client.process.albatros.api.https.port}" maxConnections="${client.process.albatros.api.https.max.connections}" connectionIdleTimeout="${client.process.albatros.api.https.connection.idle.timeout}" responseBufferSize="${client.process.albatros.api.https.response.buffer.size}" />
-	</http:request-config>
 	<sub-flow name="clients-post-process-albatros-article-api" doc:id="4d6a6107-8a69-4f5b-9cde-447612feffb7" >
 		<http:request method="POST" doc:name="Request" doc:id="5af2d855-7f39-42f4-b75c-e9e1245d4f2e" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.article.post}">
 			<http:headers ><![CDATA[#[output application/java
@@ -15,16 +12,28 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	"client_secret" : p('client.process.albatros.api.https.client_id'),
 	"client_id" : p('client.process.albatros.api.https.client_secret')
 }]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"customer_name" : vars.customerName,
+	"system_request" : vars.systemRequest
+}]]]></http:query-params>
 		</http:request>
 	</sub-flow>
 	<sub-flow name="clients-post-process-albatros-availability-api" doc:id="998f8d49-2c5d-4632-8c4f-b428badcaf81" >
-		<http:request method="POST" doc:name="Request" doc:id="c6da57a6-40f9-430d-ac90-9b5d234654cb" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.article.post}">
+		<http:request method="POST" doc:name="Request" doc:id="c6da57a6-40f9-430d-ac90-9b5d234654cb" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.availability.post}">
 			<http:headers ><![CDATA[#[output application/java
 ---
 {
-	"client_secret" : p('client.process.albatros.api.https.client_id'),
-	"client_id" : p('client.process.albatros.api.https.client_secret')
+	"client_secret" : p('client.process.albatros.https.client_id'),
+	"client_id" : p('client.process.albatros.https.client_secret')
 }]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"customer_name" : vars.customerName,
+	"system_request" : vars.systemRequest
+}]]]></http:query-params>
 		</http:request>
 	</sub-flow>
 	<sub-flow name="clients-post-process-albatros-delivery-certification-api" doc:id="ca7a053e-82cf-44bd-aeca-dc29e5dce809" >
@@ -35,6 +44,12 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	"client_secret" : p('client.process.albatros.api.https.client_id'),
 	"client_id" : p('client.process.albatros.api.https.client_secret')
 }]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"system_request" : vars.systemRequest,
+	"customer_name " : vars.customerName
+}]]]></http:query-params>
 		</http:request>
 	</sub-flow>
 	<sub-flow name="clients-post-process-albatros-inventory-assignment-api" doc:id="c4ad06f7-f69f-4abd-bbad-f2ee954b7038" >
@@ -45,6 +60,12 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	"client_secret" : p('client.process.albatros.api.https.client_id'),
 	"client_id" : p('client.process.albatros.api.https.client_secret')
 }]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"customer_name" : vars.customerName,
+	"system_request" : vars.systemRequest 
+}]]]></http:query-params>
 		</http:request>
 	</sub-flow>
 	<sub-flow name="clients-post-process-albatros-order-api" doc:id="ff628d09-5eb9-4ce8-a7c1-3786d08cb34f" >
@@ -65,6 +86,11 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	"client_secret" : p('client.process.albatros.api.https.client_id'),
 	"client_id" : p('client.process.albatros.api.https.client_secret')
 }]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"customer_name" : vars.customerName 
+}]]]></http:query-params>
 		</http:request>
 	</sub-flow>
 	<sub-flow name="clients-post-process-albatros-warehouse-output-api" doc:id="865d6cef-0184-44d8-991f-4c90db949560" >
