@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="orchestrator-get-remision-certified-main" doc:id="24e3901e-5f14-499a-a91a-6f75e650d076" >
+		<flow-ref doc:name="clients-process-albatros-call-get-remision-certified" doc:id="056fafb3-0291-44b5-ba01-c19f68a6ae3b" name="clients-process-albatros-call-get-remision-certified"/>
+	</sub-flow>
+</mule>

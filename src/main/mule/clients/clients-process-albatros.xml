@@ -103,4 +103,23 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 }]]]></http:headers>
 		</http:request>
 	</sub-flow>
+	<sub-flow name="clients-process-albatros-call-get-remision-certified" doc:id="e267a1ef-a599-4bb0-b5fe-26bf586700c8" >
+		<http:request method="GET" doc:name="Request" doc:id="0a91718a-1022-47c6-9182-18e3802c0814" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.remision.certified.get}" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : p('client.process.albatros.api.https.client_id'),
+	"client_id" : p('client.process.albatros.api.https.client_secret')
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"no_remision" : vars.no_remision,
+	"umu" : vars.umu,
+	"lote" : vars.lote,
+	"codigo_barras" : vars.codigo_barras,
+	"clave" : vars.clave
+}]]]></http:query-params>
+		</http:request>
+	</sub-flow>
 </mule>

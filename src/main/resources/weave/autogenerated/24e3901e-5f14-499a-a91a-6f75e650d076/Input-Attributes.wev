@@ -1,0 +1,29 @@
+%dw 2.0
+
+type auto_24e3901e_5f14_499a_a91a_6f75e650d076_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {| Authorization: String |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|
+    no_remision?: String, 
+    umu?: String, 
+    clave?: String, 
+    lote?: String, 
+    codigo_barras?: String
+  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {|  |}, 
+  version: String, 
+  localAddress: String
+|}
+
