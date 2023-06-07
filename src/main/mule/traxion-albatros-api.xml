@@ -3,7 +3,7 @@
     <http:listener-config name="traxion-albatros-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.4:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.5:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="traxion-albatros-api-main">
         <http:listener config-ref="traxion-albatros-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -302,31 +302,46 @@ output application/json
 		</ee:transform> [STUDIO] -->
     </flow>
     <flow name="get:\shipments\remision\certified:traxion-albatros-api-config">
-		<ee:transform doc:name="set vars query params" doc:id="0d166f40-ae9d-4efc-a3e2-e2b388da9894">
-			<ee:message />
-			<ee:variables>
-				<ee:set-variable variableName="no_remision"><![CDATA[%dw 2.0
+        <ee:transform doc:name="set vars query params" doc:id="0d166f40-ae9d-4efc-a3e2-e2b388da9894">
+            <ee:message />
+            <ee:variables>
+                <ee:set-variable variableName="no_remision"><![CDATA[%dw 2.0
 output application/json
 ---
 attributes.queryParams.no_remision default ""]]></ee:set-variable>
-				<ee:set-variable variableName="umu"><![CDATA[%dw 2.0
+                <ee:set-variable variableName="umu"><![CDATA[%dw 2.0
 output application/json
 ---
 attributes.queryParams.umu default ""]]></ee:set-variable>
-				<ee:set-variable variableName="clave"><![CDATA[%dw 2.0
+                <ee:set-variable variableName="clave"><![CDATA[%dw 2.0
 output application/json
 ---
 attributes.queryParams.clave default ""]]></ee:set-variable>
-				<ee:set-variable variableName="lote"><![CDATA[%dw 2.0
+                <ee:set-variable variableName="lote"><![CDATA[%dw 2.0
 output application/json
 ---
 attributes.queryParams.lote default ""]]></ee:set-variable>
-				<ee:set-variable variableName="codigo_barras"><![CDATA[%dw 2.0
+                <ee:set-variable variableName="codigo_barras"><![CDATA[%dw 2.0
 output application/json
 ---
 attributes.queryParams.codigo_barras default ""]]></ee:set-variable>
-			</ee:variables>
-		</ee:transform>
-		<flow-ref doc:name="orchestrator-get-remision-certified-main" doc:id="946bc46e-1094-4ec5-87c0-ec2a6ade18bc" name="orchestrator-get-remision-certified-main"/>
+            </ee:variables>
+        </ee:transform>
+        <flow-ref doc:name="orchestrator-get-remision-certified-main" doc:id="946bc46e-1094-4ec5-87c0-ec2a6ade18bc" name="orchestrator-get-remision-certified-main" />
+    </flow>
+    <flow name="post:\shipments\box_quantity:application\xml:traxion-albatros-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  lpn_pending_boxes: 5,
+  lpn_total_boxes: 20,
+  delivery_pending_boxes: 2,
+  delivery_total_boxes: 3
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
     </flow>
 </mule>
