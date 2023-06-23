@@ -29,6 +29,9 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
+				<configuration>
+					<classifier>mule-application</classifier>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -55,7 +58,7 @@
 		<dependency>
 			<groupId>ab8117f6-d718-4307-b5f7-03262d589cd0</groupId>
 			<artifactId>traxion-albatros-api</artifactId>
-			<version>1.0.9</version>
+			<version>1.0.10</version>
 			<classifier>raml</classifier>
 			<type>zip</type>
 		</dependency>

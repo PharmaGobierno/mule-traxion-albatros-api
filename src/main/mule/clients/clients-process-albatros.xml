@@ -137,4 +137,14 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 }]]]></http:query-params>
 		</http:request>
 	</sub-flow>
+	<sub-flow name="clients-process-albatros-call-post-remision-certified" doc:id="31243ede-7df8-4661-ace7-e4e65276055b" >
+		<http:request method="GET" doc:name="Request" doc:id="b8ab5522-80e4-4f99-82d3-8e5df906d275" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.remision.certified.get}" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : p('client.process.albatros.api.https.client_id'),
+	"client_id" : p('client.process.albatros.api.https.client_secret')
+}]]]></http:headers>
+		</http:request>
+	</sub-flow>
 </mule>

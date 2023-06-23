@@ -6,4 +6,7 @@
 	<sub-flow name="orchestrator-get-remision-certified-main" doc:id="24e3901e-5f14-499a-a91a-6f75e650d076" >
 		<flow-ref doc:name="clients-process-albatros-call-get-remision-certified" doc:id="056fafb3-0291-44b5-ba01-c19f68a6ae3b" name="clients-process-albatros-call-get-remision-certified"/>
 	</sub-flow>
+	<sub-flow name="orchestrator-post-remision-certified-main" doc:id="a2d5a780-648f-465a-a251-3f340c35ba31" >
+		<flow-ref doc:name="clients-process-albatros-call-post-remision-certified" doc:id="cbc0415d-9fe5-4deb-9a92-180d2f24f650" name="clients-process-albatros-call-post-remision-certified"/>
+	</sub-flow>
 </mule>

@@ -3,7 +3,7 @@
     <http:listener-config name="traxion-albatros-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.9:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.10:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="traxion-albatros-api-main">
         <http:listener config-ref="traxion-albatros-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -330,8 +330,11 @@ attributes.queryParams.codigo_barras default ""]]></ee:set-variable>
         <flow-ref doc:name="orchestrator-get-remision-certified-main" doc:id="946bc46e-1094-4ec5-87c0-ec2a6ade18bc" name="orchestrator-get-remision-certified-main" />
     </flow>
     <flow name="get:\shipments\assortment:traxion-albatros-api-config">
-		<set-variable value="#[attributes.queryParams.type_box]" doc:name="Set Type Box" doc:id="9df49fb7-075b-4f25-a631-f0d61ad06319" variableName="typeBox" />
-		<set-variable value="#[attributes.queryParams.code]" doc:name="Set Code" doc:id="4ac8944c-ce09-4c56-b1b5-69f1962cbd76" variableName="code" />
-		<flow-ref doc:name="Call to orchestrators-post-assortment" doc:id="d00a73f7-80f5-4c9e-9d21-b60d75c07d7d" name="orchestrators-post-assortment" />
+        <set-variable value="#[attributes.queryParams.type_box]" doc:name="Set Type Box" doc:id="9df49fb7-075b-4f25-a631-f0d61ad06319" variableName="typeBox" />
+        <set-variable value="#[attributes.queryParams.code]" doc:name="Set Code" doc:id="4ac8944c-ce09-4c56-b1b5-69f1962cbd76" variableName="code" />
+        <flow-ref doc:name="Call to orchestrators-post-assortment" doc:id="d00a73f7-80f5-4c9e-9d21-b60d75c07d7d" name="orchestrators-post-assortment" />
+    </flow>
+    <flow name="post:\shipments\remision\certified:text\xml:traxion-albatros-api-config">
+		<flow-ref doc:name="orchestrator-post-remision-certified-main" doc:id="13408a75-07d0-4e76-8f0c-04580771dd16" name="orchestrator-post-remision-certified-main"/>
     </flow>
 </mule>
