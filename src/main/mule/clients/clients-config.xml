@@ -8,5 +8,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/sqs http://www.mulesoft.org/schema/mule/sqs/current/mule-sqs.xsd">
 	<http:request-config name="HTTP_request_process_albatros" doc:name="HTTP Request configuration" doc:id="bd26d500-0b97-4a0d-8225-1edd92571d4d" responseTimeout="${client.process.albatros.https.response.timeout}">
 		<http:request-connection protocol="HTTPS" host="${client.process.albatros.https.host}" port="${client.process.albatros.https.port}" maxConnections="${client.process.albatros.https.max.connections}" connectionIdleTimeout="${client.process.albatros.https.connection.idle.timeout}" responseBufferSize="${client.process.albatros.https.response.buffer.size}" />
-	</http:request-config>	
+	</http:request-config>
+	<http:request-config name="client-utils-fwk-stream-HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="af8eb05c-3a94-4924-b7a6-145f1731e7f3" responseTimeout="${client.utils.fwk.stream.http.timeout}">
+		<http:request-connection host="${client.utils.fwk.stream.http.host}" port="${client.utils.fwk.stream.http.port}" maxConnections="${client.utils.fwk.stream.http.max.connections}" connectionIdleTimeout="${client.utils.fwk.stream.http.connection.idle.timeout}" responseBufferSize="${client.utils.fwk.stream.http.response.buffer.size}" protocol="HTTPS"/>
+	</http:request-config>
 </mule>

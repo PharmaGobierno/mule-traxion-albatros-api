@@ -6,6 +6,82 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="orchestrators-post-order" doc:id="9de8a181-03dc-4282-8646-dec20083d7c8" >
 		<logger level="INFO" doc:name="Payload" doc:id="e4513dfc-360a-4716-a4d6-0d3794b0253e" message="#[payload]"/>
-		<flow-ref doc:name="Call clients-post-process-albatros-order-api" doc:id="e6a77698-76e2-4ba0-962d-036dc0381695" name="clients-post-process-albatros-order-api"/>
+		<choice doc:name="Choice" doc:id="444f1112-684a-4419-8f4a-870c937c9db2" >
+			<when expression="#[p('client.process.albatros.https.test.mode')]">
+				<ee:transform doc:name="Transform Message" doc:id="a7ab6416-d854-4c6d-a74a-a164b0eb1052" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload.shipments map ((shipment) -> {
+  order_number: shipment.shipment_number,
+  skus: shipment.items map ((item) -> {
+      sku: item.product_number,
+      quantity: item.ordered_quantity
+    })
+})]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<flow-ref doc:name="Call to orchestrators-post-order-s3" doc:id="aa301b4c-3e3e-43e2-a08e-4128af8cb43e" name="orchestrators-post-order-s3"/>
+				<logger level="INFO" doc:name="Logger" doc:id="94dadb89-7e6b-4e39-836a-f8886be16e52" />
+			</when>
+			<otherwise >
+				<flow-ref doc:name="Call clients-post-process-albatros-order-api" doc:id="e6a77698-76e2-4ba0-962d-036dc0381695" name="clients-post-process-albatros-order-api" />
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<sub-flow name="orchestrators-post-order-s3" doc:id="b3c8d224-d90f-4718-8a7b-c8fd9d83893b" >
+		<ee:transform doc:name="set vars s3 logs" doc:id="65165e7b-091a-4e64-b5ba-b395bcbd33bf" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="doc_s3_name" ><![CDATA[%dw 2.0
+output application/json
+---
+payload[0].order_number]]></ee:set-variable>
+				<ee:set-variable variableName="message_s3" ><![CDATA[%dw 2.0
+import * from dw::core::Binaries
+output application/json
+---
+ toBase64(write(payload, "application/json"))]]></ee:set-variable>
+				<ee:set-variable variableName="ext" ><![CDATA[%dw 2.0
+output application/json
+---
+".json"]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="set S3 Variables" doc:id="e6bb42c6-5c8c-4365-893a-43a1e36d884e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+   "api":"traxion-albatros-api",
+   "message_type":"json",
+   "s3": "txp.integraciones.files-qa",
+   "correlation_id": correlationId,
+   "logger": true,
+   "created_pk": now() as String {format: "uuuuMM"},
+   "timestamp": now() as String {format: "uuuuMMddKKmmssSS"},
+   "identifier": "api=test-orders/created_pk="++ now() as String {format: "uuuuMM"} ++ "/" ++ (vars.doc_s3_name default "NO_PROVIDER")  ++ "_" ++ now() as String {format: "uuuuMMddKKmmssSS"} ++ "-REQ" ++ vars.ext,   
+   "key": "api=test-orders/created_pk="++ now() as String {format: "uuuuMM"} ++ "/" ++ (vars.doc_s3_name default "NO_PROVIDER")  ++ "_" ++ now() as String {format: "uuuuMMddKKmmssSS"} ++ "-REQ" ++ vars.ext,
+   "message": vars.message_s3
+   
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables />
+		</ee:transform>
+		<flow-ref doc:name="orchestrator-post-s3-log" doc:id="21e2fbfd-b31d-4f07-8c9a-1a10c755eaf5" name="orchestrator-post-s3-log" />
+	</sub-flow>
+	<sub-flow name="orchestrator-post-s3-log" doc:id="a51d6711-2831-43f5-ace9-ed9f6a09264b" >
+		<async doc:name="Async" doc:id="c192fe7b-c6dd-4438-9267-1c167674007e" >
+			<try doc:name="Try" doc:id="515e1565-4945-4c95-bff4-ba052b1a44b8" >
+				<flow-ref doc:name="Call to client-utils-fwk-stream-call-service-file" doc:id="36227cf8-75c2-4d04-8ac4-2f3e39642005" name="client-utils-fwk-stream-call-service-file" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="aa200377-2575-43aa-a76c-926a84649c77" >
+						<logger level="INFO" doc:name="Logger" doc:id="ac897b7d-5c0c-4e76-9043-34ca8fac01d1" />
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</async>
 	</sub-flow>
 </mule>

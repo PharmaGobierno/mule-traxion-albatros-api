@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="client-utils-fwk-stream-call-service-file" doc:id="ea55b290-8f5a-49b3-9cb9-282c9803c1b5" >
+		<http:request method="POST" doc:name="Request" doc:id="e2bac694-6972-44e4-99e2-05f591757b77" config-ref="client-utils-fwk-stream-HTTP_Request_configuration" path="${client.utils.fwk.stream.http.path.file}" target="responseSearch">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_id": p('client.utils.fwk.stream.https.client_id'),
+	"client_secret": p('client.utils.fwk.stream.https.client_secret')
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"xConfigurationType" : vars.configuration_type,
+	"input1" : vars.input1 default "",
+	"input2" : vars.input2 default "",
+	"input3" : vars.input3 default "",
+	"input4" : vars.input4 default "",
+	"input5" : vars.input5 default "",
+	"input6" : vars.input6 default "",
+	"input7" : vars.input7 default "",	
+	"input8" : vars.input8 default "",
+	"input9" : vars.input9 default "",
+	"input10" : vars.input10 default "",		
+	"input1Method" : vars.input1Method default null,
+	"input2Method" : vars.input2Method default null,
+	"input3Method" : vars.input3Method default "valNullDrvn",
+	"input4Method" : vars.input4Method default "valNullDrvn",
+	"input5Method" : vars.input5Method default "valNullDrvn",
+	"input6Method" : vars.input6Method default "valNullDrvn",
+	"input7Method" : vars.input7Method default "valNullDrvn",
+	"input8Method" : vars.input8Method default "valNullDrvn",
+	"input9Method" : vars.input9Method default "valNullDrvn",
+	"input10Method" : vars.input10Method default "valNullDrvn"	
+}]]]></http:query-params>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="3516a04f-3e30-45cb-bfa3-b3d75ab8cbf3" message="#[vars.responseSearch]"/>
+	</sub-flow>
+</mule>
