@@ -8,7 +8,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		<logger level="INFO" doc:name="Payload" doc:id="e4513dfc-360a-4716-a4d6-0d3794b0253e" message="#[payload]"/>
 		<choice doc:name="Choice" doc:id="444f1112-684a-4419-8f4a-870c937c9db2" >
 			<when expression="#[p('client.process.albatros.https.test.mode')]">
-				<ee:transform doc:name="Transform Message" doc:id="a7ab6416-d854-4c6d-a74a-a164b0eb1052" >
+				<ee:transform doc:name="set payload asignacion de inventario" doc:id="a7ab6416-d854-4c6d-a74a-a164b0eb1052" >
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -21,8 +21,48 @@ payload.shipments map ((shipment) -> {
     })
 })]]></ee:set-payload>
 					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="doc_s3_name" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.payloadBK.shipments[0].shipment_number ++ "_AI"]]></ee:set-variable>
+					</ee:variables>
 				</ee:transform>
 				<flow-ref doc:name="Call to orchestrators-post-order-s3" doc:id="aa301b4c-3e3e-43e2-a08e-4128af8cb43e" name="orchestrators-post-order-s3"/>
+				<ee:transform doc:name="set payload salida de almacen" doc:id="d347d24e-07ea-48a3-bd78-f4f0669ce34e">
+					<ee:message>
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.payloadBK.shipments map ((shipment) -> {
+	"order_number": shipment.shipment_number,
+	"umu": (random() * 1000) as String {format: "000"},
+    "load": (random() * 10000) as String {format: "0000"} ,
+    "umu_name": "UMF XILITLA",
+    "route": (random() * 1000) as String {format: "000"},
+    "box_quantity": 1,
+	skus: shipment.items map ((item) -> {
+		"sku": item.product_number,
+		"quantity": item.ordered_quantity,
+ 		"avg_cost": (random() * 100) as String {format: "00.0000"},
+        "lote_info": [
+          {
+            "lot_number": "M2306461",
+            "expiration_date": "01/03/2025",
+            "quantity": item.ordered_quantity
+          }
+        ]		
+	})    
+})]]></ee:set-payload>
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="doc_s3_name" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.payloadBK.shipments[0].shipment_number ++ "_SA"]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+				<flow-ref doc:name="Call to orchestrators-post-order-s3" doc:id="de430b80-2167-46f4-995c-327074fcce79" name="orchestrators-post-order-s3"/>
 				<logger level="INFO" doc:name="Logger" doc:id="94dadb89-7e6b-4e39-836a-f8886be16e52" />
 			</when>
 			<otherwise >
@@ -34,10 +74,6 @@ payload.shipments map ((shipment) -> {
 		<ee:transform doc:name="set vars s3 logs" doc:id="65165e7b-091a-4e64-b5ba-b395bcbd33bf" >
 			<ee:message />
 			<ee:variables >
-				<ee:set-variable variableName="doc_s3_name" ><![CDATA[%dw 2.0
-output application/json
----
-payload[0].order_number]]></ee:set-variable>
 				<ee:set-variable variableName="message_s3" ><![CDATA[%dw 2.0
 import * from dw::core::Binaries
 output application/json
