@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="orchestrator-get-boxes-by-order-id-main" doc:id="630dbd29-a5df-40a4-99d7-765fdf1fa6b3" >
+		<flow-ref doc:name="clients-process-albatros-call-get-boxes-by-order-id" doc:id="a59faee0-8421-4398-9111-3bd29ca09f09" name="clients-process-albatros-call-get-boxes-by-order-id"/>
+	</sub-flow>
+</mule>

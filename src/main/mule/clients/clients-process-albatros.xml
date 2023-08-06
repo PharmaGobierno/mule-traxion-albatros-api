@@ -147,4 +147,20 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 }]]]></http:headers>
 		</http:request>
 	</sub-flow>
+	<sub-flow name="clients-process-albatros-call-get-boxes-by-order-id" doc:id="ac9cb58e-8c90-4122-8c37-8c966f5c147b" >
+		<http:request method="GET" doc:name="Request" doc:id="964f29c7-0fbe-421f-bfcf-d9d38b1a56e0" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.get.boxes.by.order.post}" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : p('client.process.albatros.api.https.client_id'),
+	"Content-Type" : "application/json",
+	"client_id" : p('client.process.albatros.api.https.client_secret')
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"orderId" : vars.orderId
+}]]]></http:uri-params>
+		</http:request>
+	</sub-flow>
 </mule>
