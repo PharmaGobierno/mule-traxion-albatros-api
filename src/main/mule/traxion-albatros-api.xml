@@ -3,7 +3,7 @@
     <http:listener-config name="traxion-albatros-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.12:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.13:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="traxion-albatros-api-main">
         <http:listener config-ref="traxion-albatros-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -346,12 +346,12 @@ attributes.queryParams.codigo_barras default ""]]></ee:set-variable>
     <flow name="post:\shipments\remision\certified:text\xml:traxion-albatros-api-config">
         <flow-ref doc:name="orchestrator-post-remision-certified-main" doc:id="13408a75-07d0-4e76-8f0c-04580771dd16" name="orchestrator-post-remision-certified-main" />
     </flow>
-    <flow name="get:\shipments\order\(orderId)\box:traxion-albatros-api-config">
+    <flow name="get:\shipments\order\(lodnum)\box:traxion-albatros-api-config">
         <ee:transform>
             <ee:variables>
-                <ee:set-variable variableName="orderId">attributes.uriParams.'orderId'</ee:set-variable>
+                <ee:set-variable variableName="lodnum">attributes.uriParams.'lodnum'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<flow-ref doc:name="orchestrator-get-boxes-by-order-id-main" doc:id="85c5f349-91f5-40af-ab68-83e480a3acf4" name="orchestrator-get-boxes-by-order-id-main"/>
+        <flow-ref doc:name="orchestrator-get-boxes-by-order-id-main" doc:id="85c5f349-91f5-40af-ab68-83e480a3acf4" name="orchestrator-get-boxes-by-order-id-main" />
     </flow>
 </mule>

@@ -159,7 +159,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 			<http:uri-params ><![CDATA[#[output application/java
 ---
 {
-	"orderId" : vars.orderId
+	"lodnum" : vars.lodnum
 }]]]></http:uri-params>
 		</http:request>
 	</sub-flow>
