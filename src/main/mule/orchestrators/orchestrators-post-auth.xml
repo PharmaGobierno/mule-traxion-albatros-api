@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="orchestrators-post-auth" doc:id="d71ba2fc-c13e-496c-a952-4f99e9752406" >
+		<flow-ref doc:name="client-system-crm-auth" doc:id="0053d8e7-4944-4441-adb3-473a49bf02cf" name="client-system-crm-auth"/>
+	</sub-flow>
+</mule>

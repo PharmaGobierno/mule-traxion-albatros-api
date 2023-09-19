@@ -12,4 +12,11 @@ http://www.mulesoft.org/schema/mule/sqs http://www.mulesoft.org/schema/mule/sqs/
 	<http:request-config name="client-utils-fwk-stream-HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="af8eb05c-3a94-4924-b7a6-145f1731e7f3" responseTimeout="${client.utils.fwk.stream.http.timeout}">
 		<http:request-connection host="${client.utils.fwk.stream.http.host}" port="${client.utils.fwk.stream.http.port}" maxConnections="${client.utils.fwk.stream.http.max.connections}" connectionIdleTimeout="${client.utils.fwk.stream.http.connection.idle.timeout}" responseBufferSize="${client.utils.fwk.stream.http.response.buffer.size}" protocol="HTTPS"/>
 	</http:request-config>
+	<http:request-config name="client-system-crm-HTTP-Request-configuration" doc:name="HTTP Request configuration" doc:id="d66f5ed5-7597-464c-b342-ff3411e44852" responseTimeout="${client.system.crm.https.response.timeout}">
+		<http:request-connection protocol="HTTPS" host="${client.system.crm.https.host}" port="${client.system.crm.https.port}" maxConnections="${client.system.crm.https.max.connections}" connectionIdleTimeout="${client.system.crm.https.connection.idle.timeout}" responseBufferSize="${client.system.crm.https.response.buffer.size}" />
+		<http:default-headers >
+			<http:default-header key="client_id" value="${client.system.crm.https.client_id}" />
+			<http:default-header key="client_secret" value="${client.system.crm.https.client_secret}" />
+		</http:default-headers>
+	</http:request-config>
 </mule>

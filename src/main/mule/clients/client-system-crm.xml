@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="client-system-crm-auth" doc:id="2915622c-33b6-4d6d-b3e2-8eebb42d0127" >
+		<http:request method="POST" doc:name="Request" doc:id="b9205109-beb4-4cba-a300-4520be1a6256" config-ref="client-system-crm-HTTP-Request-configuration" path="${client.system.crm.https.path.auth.post}"/>
+	</sub-flow>
+</mule>
