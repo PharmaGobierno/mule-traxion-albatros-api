@@ -102,7 +102,7 @@
 		<dependency>
 			<groupId>ab8117f6-d718-4307-b5f7-03262d589cd0</groupId>
 			<artifactId>traxion-albatros-api</artifactId>
-			<version>1.0.20</version>
+			<version>1.0.22</version>
 			<classifier>raml</classifier>
 			<type>zip</type>
 		</dependency>
