@@ -3,7 +3,7 @@
     <http:listener-config name="traxion-albatros-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.22:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.23:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="traxion-albatros-api-main">
         <http:listener config-ref="traxion-albatros-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -366,7 +366,26 @@ attributes.queryParams.codigo_barras default ""]]></ee:set-variable>
         <flow-ref doc:name="orchestrators-post-auth" doc:id="7cd08ca6-5b31-4a7f-9332-40e198e3bae7" name="orchestrators-post-auth" />
     </flow>
     <flow name="get:\shipments\stock_report:traxion-albatros-api-config">
-        <flow-ref doc:name="Call to orchestrator-get-stock-report-main" doc:id="863e19f2-8466-40b7-bbe8-88aeb81118a0" name="orchestrator-get-stock-report-main"/>
-		<logger level="INFO" doc:name="Logger" doc:id="8ae13ae3-48e0-4827-ab41-f6d6ee908888" message="#[payload]"/>
+        <flow-ref doc:name="Call to orchestrator-get-stock-report-main" doc:id="863e19f2-8466-40b7-bbe8-88aeb81118a0" name="orchestrator-get-stock-report-main" />
+        <logger level="INFO" doc:name="Logger" doc:id="8ae13ae3-48e0-4827-ab41-f6d6ee908888" message="#[payload]" />
+    </flow>
+    <flow name="post:\shipments\confirmation\receipt:text\xml:traxion-albatros-api-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  traxion_response: {
+    completed_succesfully: "false",
+    error: {
+      error_type: "APIKIT-XXX",
+      user_error_description: "Detailed and plain language description of the problem",
+      system_error_description: "Verbose,plain language description of the problem for the app developer with hints about how to fix it."
+    }
+  }
+} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
     </flow>
 </mule>
