@@ -63,8 +63,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 			<http:query-params ><![CDATA[#[output application/java
 ---
 {
-	"customer_name" : vars.customerName,
-	"system_request" : vars.systemRequest 
+	"Key" : "Value"
 }]]]></http:query-params>
 		</http:request>
 	</sub-flow>
