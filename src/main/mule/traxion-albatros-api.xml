@@ -367,7 +367,6 @@ attributes.queryParams.codigo_barras default ""]]></ee:set-variable>
     </flow>
     <flow name="get:\shipments\stock_report:traxion-albatros-api-config">
         <flow-ref doc:name="Call to orchestrator-get-stock-report-main" doc:id="863e19f2-8466-40b7-bbe8-88aeb81118a0" name="orchestrator-get-stock-report-main" />
-        <logger level="INFO" doc:name="Logger" doc:id="8ae13ae3-48e0-4827-ab41-f6d6ee908888" message="#[payload]" />
     </flow>
     <flow name="post:\shipments\confirmation\receipt:text\xml:traxion-albatros-api-config">
         <ee:transform doc:name="Transform Message">

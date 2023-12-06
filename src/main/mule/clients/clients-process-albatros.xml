@@ -63,7 +63,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 			<http:query-params ><![CDATA[#[output application/java
 ---
 {
-	"Key" : "Value"
+	customer_name : vars.customerName,
+ 	system_request : vars.systemRequest 
 }]]]></http:query-params>
 		</http:request>
 	</sub-flow>
@@ -123,6 +124,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	</sub-flow>
 	<sub-flow name="clients-process-albatros-call-get-stock-report" doc:id="f1b5c3c4-2114-410d-aa87-37dfc1e9fa45" >
 		<http:request method="GET" doc:name="Request" doc:id="2f89ec97-bca9-49e4-96df-5f0e904c45c8" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.get.stock.report}" >
+			<non-repeatable-stream />
 			<http:headers ><![CDATA[#[output application/java
 ---
 {
