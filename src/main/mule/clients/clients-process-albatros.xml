@@ -130,6 +130,14 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	"client_secret" : p('client.process.albatros.api.https.client_id'),
 	"client_id" : p('client.process.albatros.api.https.client_secret')
 }]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	("movement_zone" : attributes.queryParams.movement_zone) 
+		if(attributes.queryParams.movement_zone?),
+	("counting_zone" : attributes.queryParams.counting_zone)
+		if(attributes.queryParams.counting_zone?)
+}]]]></http:query-params>
 		</http:request>
 	</sub-flow>
 	<sub-flow name="clients-post-process-albatros-assortment-api" doc:id="34d3c61f-0209-4fdc-8e20-9c486d629ccd" >
