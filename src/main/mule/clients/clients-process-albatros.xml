@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<sub-flow name="clients-post-process-albatros-article-api" doc:id="4d6a6107-8a69-4f5b-9cde-447612feffb7" >
-		<http:request method="POST" doc:name="Request" doc:id="5af2d855-7f39-42f4-b75c-e9e1245d4f2e" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.article.post}">
+		<http:request method="PUT" doc:name="Request" doc:id="5af2d855-7f39-42f4-b75c-e9e1245d4f2e" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.article.post}">
 			<http:headers ><![CDATA[#[output application/java
 ---
 {
@@ -95,7 +95,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 			<http:query-params ><![CDATA[#[output application/java
 ---
 {
-	"customer_name" : vars.customerName 
+	customer_name : vars.customerName,
+ 	system_request : vars.systemRequest 
 }]]]></http:query-params>
 		</http:request>
 	</sub-flow>
@@ -107,6 +108,12 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	"client_secret" : p('client.process.albatros.api.https.client_id'),
 	"client_id" : p('client.process.albatros.api.https.client_secret')
 }]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"customer_name" : vars.customerName,
+	"system_request" : vars.systemRequest
+}]]]></http:query-params>
 		</http:request>
 	</sub-flow>
 	<sub-flow name="clients-process-albatros-call-get-remision-certified" doc:id="e267a1ef-a599-4bb0-b5fe-26bf586700c8" >
@@ -143,7 +150,9 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	("movement_zone" : attributes.queryParams.movement_zone) 
 		if(attributes.queryParams.movement_zone?),
 	("counting_zone" : attributes.queryParams.counting_zone)
-		if(attributes.queryParams.counting_zone?)
+		if(attributes.queryParams.counting_zone?),
+	"customer_name" : vars.customerName,
+	"system_request" : vars.systemRequest
 }]]]></http:query-params>
 		</http:request>
 	</sub-flow>
@@ -158,7 +167,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 			<http:query-params ><![CDATA[#[output application/java
 ---
 {
-	"customer_name" : vars.customerName 
+	"customer_name" : vars.customerName,
+	"system_request" : vars.systemRequest
 }]]]></http:query-params>
 		</http:request>
 	</sub-flow>
@@ -170,6 +180,12 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	"client_secret" : p('client.process.albatros.api.https.client_id'),
 	"client_id" : p('client.process.albatros.api.https.client_secret')
 }]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"customer_name" : vars.customerName,
+	"system_request" : vars.systemRequest
+}]]]></http:query-params>
 		</http:request>
 	</sub-flow>
 	<sub-flow name="clients-process-albatros-call-get-boxes-by-order-id" doc:id="ac9cb58e-8c90-4122-8c37-8c966f5c147b" >
@@ -184,7 +200,9 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 			<http:uri-params ><![CDATA[#[output application/java
 ---
 {
-	"lodnum" : vars.lodnum
+	"lodnum" : vars.lodnum,
+	"customer_name" : vars.customerName,
+	"system_request" : vars.systemRequest
 }]]]></http:uri-params>
 		</http:request>
 	</sub-flow>
