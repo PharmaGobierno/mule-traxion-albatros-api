@@ -238,7 +238,8 @@ output application/json
     </flow>
     <flow name="post:\shipments\order:application\json:traxion-albatros-api-config">
         <set-variable value="#[attributes.queryParams.customer_name]" doc:name="customer name" doc:id="a1b31782-0395-4538-a129-2ed22e73eb2d" variableName="customerName" />
-        <ee:transform doc:name="Transform Message" doc:id="32452251-5ae7-4f8c-b3af-2d192a7bb8a5">
+        <logger level="INFO" doc:name="customerName" doc:id="2832dc56-762d-4761-b5c0-3ae68e28aa48" message="CustomerName: #[vars.customerName]"/>
+		<ee:transform doc:name="payload backup" doc:id="32452251-5ae7-4f8c-b3af-2d192a7bb8a5">
             <ee:message />
             <ee:variables>
                 <ee:set-variable variableName="payloadBK"><![CDATA[%dw 2.0

@@ -76,6 +76,12 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	"client_secret" : p('client.process.albatros.api.https.client_id'),
 	"client_id" : p('client.process.albatros.api.https.client_secret')
 }]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	customer_name : vars.customerName,
+ 	system_request : vars.systemRequest 
+}]]]></http:query-params>
 		</http:request>
 	</sub-flow>
 	<sub-flow name="clients-post-process-albatros-volumetry-api" doc:id="45da222c-3c4a-45ff-a9e2-4d118492b5ac" >
