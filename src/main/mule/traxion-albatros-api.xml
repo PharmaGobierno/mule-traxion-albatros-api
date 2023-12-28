@@ -3,7 +3,7 @@
     <http:listener-config name="traxion-albatros-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.29:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.31:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="traxion-albatros-api-main">
         <http:listener config-ref="traxion-albatros-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -369,7 +369,7 @@ attributes.queryParams.codigo_barras default ""]]></ee:set-variable>
     <flow name="get:\shipments\stock_report:traxion-albatros-api-config">
         <flow-ref doc:name="Call to orchestrator-get-stock-report-main" doc:id="863e19f2-8466-40b7-bbe8-88aeb81118a0" name="orchestrator-get-stock-report-main" />
     </flow>
-    <flow name="post:\shipments\confirmation\receipt:text\xml:traxion-albatros-api-config">
+    <flow name="post:\shipments\confirmation\receipt:text\xml:traxion-albatros-api-config" doc:id="2313a5aa-3cb0-4d1b-a5fd-5dae720cece1">
         <ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
@@ -422,5 +422,61 @@ output application/xml
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
+    </flow>
+    <flow name="post:\shipments\remision\certified:application\xml:traxion-albatros-api-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+do {
+  ns soap http://schemas.xmlsoap.org/soap/envelope/
+  ---
+  {
+    soap#Envelope: {
+      soap#Body: do {
+        ns ns2 https://pharma.traxion.global
+        ---
+        {
+          ns2#GetRemisionesCertificadasResponse: {
+            ns2#GetRemisionesCertificadasResult: {
+              ns2#RemisionCertificada: {
+                ns2#NO_REMISION: "0463304",
+                ns2#UMU: "031",
+                ns2#DESCRIPCION_UMU_NUM: "00420404",
+                ns2#NOMBRE_UMU: "UMF ESCARCEGA",
+                ns2#CLAVE: "010000411700",
+                ns2#CANTIDAD: "50",
+                ns2#COSTO_LINEA: "52.88",
+                ns2#PARTIDA_PRESUPUESTAL: "2530",
+                ns2#SUBPARTIDA_PRESUPUESTAL: "10000",
+                ns2#IMPORTE: "2644.0",
+                ns2#FECHA_CERTIFICACION: "2023-05-23T12:09:51",
+                ns2#LOTE: "U22N342",
+                ns2#FECHA_CADUCIDAD: "2024-11-01",
+                ns2#CODIGO_BARRAS: "7501125193927"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} as Object {encoding: "UTF-8", mediaType: "application/xml"}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\tms\shipments\order:application\xml:traxion-albatros-api-config">
+        <ee:transform doc:name="Transform Message" doc:id="d1e78e5f-d68c-43cb-9e96-78273fda9d08">
+            <ee:message>
+            </ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="customer_name" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.customer_name]]></ee:set-variable>
+			</ee:variables>
+        </ee:transform>
+		<flow-ref doc:name="Call-orchestrator-post-tms-shipments-order" doc:id="b938609f-307d-49d7-a8ad-662919678a69" name="orchestrator-post-tms-shipments-order"/>
     </flow>
 </mule>

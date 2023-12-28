@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="orchestrator-post-tms-shipments-order" doc:id="11fa6d9d-b6a0-4874-a85f-8d25de99727e" >
+		<logger level="INFO" doc:name="Logger" doc:id="88980eb8-d0f8-4c43-bc63-8bc71e47abbf" message="#[payload]" />
+		<ee:transform doc:name="Transform Xml to Json" doc:id="d974af7f-900d-4f81-a481-f7768177e1cb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+	{
+  "processShipmentOrderCreate": {
+    "IgnoreAllShipment": payload.processShipmentOrderCreate.IgnoreAllShipment as Boolean,
+    "Shipment": {
+      "ShipmentNumber": payload.processShipmentOrderCreate.Shipment.ShipmentNumber,
+      "ShipmentDescription": payload.processShipmentOrderCreate.Shipment.ShipmentDescription,
+      "IgnoreThroughPointsFlag": payload.processShipmentOrderCreate.Shipment.IgnoreThroughPointsFlag as  Boolean,
+      "IgnoreChargeOverridesFlag": payload.processShipmentOrderCreate.Shipment.IgnoreChargeOverridesFlag as Boolean,
+      "IgnoreReferenceNumbersFlag": payload.processShipmentOrderCreate.Shipment.IgnoreReferenceNumbersFlag as Boolean,
+      "CustomerCode": payload.processShipmentOrderCreate.Shipment.CustomerCode,
+      "ShipmentEntryVersionCode": payload.processShipmentOrderCreate.Shipment.ShipmentEntryVersionCode,
+      "ShipmentEntryTypeCode": payload.processShipmentOrderCreate.Shipment.ShipmentEntryTypeCode,
+      "LogisitcsGroupCode": payload.processShipmentOrderCreate.Shipment.LogisitcsGroupCode,
+      "DivisionCode": payload.processShipmentOrderCreate.Shipment.DivisionCode,
+      "FreightTermsEnumVal": payload.processShipmentOrderCreate.Shipment.FreightTermsEnumVal,
+      "IgnoreContainersFlag": payload.processShipmentOrderCreate.Shipment.IgnoreContainersFlag as Boolean,
+      "ProfitCenterCode": payload.processShipmentOrderCreate.Shipment.ProfitCenterCode,
+      "SystemPlanID": payload.processShipmentOrderCreate.Shipment.SystemPlanID,
+      "CommodityCode": payload.processShipmentOrderCreate.Shipment.CommodityCode,
+      "ComponentTypeGroupCode": payload.processShipmentOrderCreate.Shipment.ComponentTypeGroupCode,
+      "ShipFromLocationCode": payload.processShipmentOrderCreate.Shipment.ShipFromLocationCode,
+      "PickupFromDateTime": payload.processShipmentOrderCreate.Shipment.PickupFromDateTime as DateTime,
+      "PickupToDateTime": payload.processShipmentOrderCreate.Shipment.PickupToDateTime as DateTime,
+      "ShipToLocationCode": payload.processShipmentOrderCreate.Shipment.ShipToLocationCode,
+      "ShipToLocationTypeEnumVal": payload.processShipmentOrderCreate.Shipment.ShipToLocationTypeEnumVal,
+      "DeliveryFromDateTime": payload.processShipmentOrderCreate.Shipment.DeliveryFromDateTime as DateTime,
+      "DeliveryToDateTime": payload.processShipmentOrderCreate.Shipment.DeliveryToDateTime as DateTime,
+      "Container": {
+        "ContainerTypeCode": payload.processShipmentOrderCreate.Shipment.Container.ContainerTypeCode,
+        "IgnoreShipmentItemsFlag": payload.processShipmentOrderCreate.Shipment.Container.IgnoreShipmentItemsFlag as Boolean,
+        "IgnoreWeightByFreightClassFlag": payload.processShipmentOrderCreate.Shipment.Container.IgnoreWeightByFreightClassFlag,
+        "IgnoreReferenceNumbersFlag": payload.processShipmentOrderCreate.Shipment.Container.IgnoreReferenceNumbersFlag as Boolean,
+        "Quantity": payload.processShipmentOrderCreate.Shipment.Container.Quantity,
+        "Is3DLoadingRequiredFlag": payload.processShipmentOrderCreate.Shipment.Container.Is3DLoadingRequiredFlag as Boolean,
+        "ContainerShippingInformation": {
+          "Volume": payload.processShipmentOrderCreate.Shipment.Container.ContainerShippingInformation.Volume
+        },
+        "WeightByFreightClass": {
+          "FreightClassNominalWeight": payload.processShipmentOrderCreate.Shipment.Container.WeightByFreightClass.FreightClassNominalWeight,
+          "FreightClassCode": payload.processShipmentOrderCreate.Shipment.Container.WeightByFreightClass.FreightClassCode
+        }
+      },
+      "ReferenceNumberStructure": payload.processShipmentOrderCreate.Shipment.*ReferenceNumberStructure
+      }
+    }
+  }]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="Call-clients-post-process-albatros-tms-shipments-order" doc:id="70324195-eb30-47c1-8c79-5b7493cdc391" name="clients-process-albatros-call-post-tms-shipments-order" />
+		<logger level="INFO" doc:name="Logger" doc:id="505d5dde-07fe-4b11-abfe-c55d24e7e606" message="#[payload]" />
+	</sub-flow>
+</mule>
