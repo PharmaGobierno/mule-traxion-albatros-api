@@ -3,7 +3,7 @@
     <http:listener-config name="traxion-albatros-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.32:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.34:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="traxion-albatros-api-main">
         <http:listener config-ref="traxion-albatros-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -405,24 +405,6 @@ output application/json
             </ee:message>
         </ee:transform>
     </flow>
-    <flow name="post:\tms\shipments\order:text\xml:traxion-albatros-api-config">
-        <ee:transform>
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/xml
----
-{
-  traxion_response: {
-    completed_succesfully: "true",
-    response: {
-      message: "Shipment created correctly",
-      data: null
-    }
-  }
-}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-    </flow>
     <flow name="post:\shipments\remision\certified:application\xml:traxion-albatros-api-config">
         <ee:transform doc:name="Transform Message">
             <ee:message>
@@ -479,8 +461,8 @@ attributes.queryParams.customer_name]]></ee:set-variable>
         <flow-ref doc:name="Call-orchestrator-post-tms-shipments-order" doc:id="b938609f-307d-49d7-a8ad-662919678a69" name="orchestrator-post-tms-shipments-order" />
     </flow>
     <flow name="patch:\redpack\shipments\order:application\json:traxion-albatros-api-config">
-        <logger level="INFO" doc:name="Logger" doc:id="c16201ee-1ed2-4f42-b6a4-c36af769f920" message="#[payload]"/>
-		<ee:transform>
+        <logger level="INFO" doc:name="Logger" doc:id="c16201ee-1ed2-4f42-b6a4-c36af769f920" message="#[payload]" />
+        <ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -495,5 +477,17 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
+    </flow>
+    <flow name="post:\tms\order\dispatch:application\json:traxion-albatros-api-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:message />
+            <ee:variables>
+                <ee:set-variable variableName="customer_name"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.customer_name]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <flow-ref doc:name="Call-orchestrator-post-shipment-dispatch" doc:id="ab5f221e-ead0-475f-b266-1050e3ff9fd1" name="orchestrator-post-shipment-dispatch" />
     </flow>
 </mule>

@@ -222,4 +222,20 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 }]]]></http:query-params>
 		</http:request>
 	</sub-flow>
+	<sub-flow name="clients-process-albatros-call-post-tms-shipments-dispatch" doc:id="c1748695-8f68-4ac7-8639-c866681a169c" >
+		<http:request method="POST" doc:name="Request" doc:id="81f011a2-41d4-4373-9f0d-327d0bef5d22" config-ref="HTTP_request_process_albatros" path="${client.process.albatross.https.path.post.tms.order.dispatch}" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : p('client.process.albatros.https.client_secret'),
+	"Conten-Type" : "application/json",
+	"client_id" : p('client.process.albatros.https.client_id')
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"customer_name" : vars.customer_name
+}]]]></http:query-params>
+		</http:request>
+	</sub-flow>
 </mule>
