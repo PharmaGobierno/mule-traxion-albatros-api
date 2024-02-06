@@ -405,8 +405,8 @@ output application/json
             </ee:message>
         </ee:transform>
     </flow>
-    <flow name="post:\tms\shipments\order:text\xml:traxion-albatros-api-config">
-        <ee:transform>
+    <flow name="post:\tms\shipments\order:application\xml:traxion-albatros-api-config">
+        <ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/xml
@@ -419,52 +419,37 @@ output application/xml
       data: null
     }
   }
-}]]></ee:set-payload>
+} as Object {encoding: "UTF-8", mediaType: "application/xml"}]]></ee:set-payload>
             </ee:message>
         </ee:transform>
     </flow>
     <flow name="post:\shipments\remision\certified:application\xml:traxion-albatros-api-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/xml
+		<ee:transform doc:name="set vars query params" doc:id="a19d18ec-8348-4bbf-b953-c3abbf1c26f2" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="no_remision" ><![CDATA[%dw 2.0
+output application/json
 ---
-do {
-  ns soap http://schemas.xmlsoap.org/soap/envelope/
-  ---
-  {
-    soap#Envelope: {
-      soap#Body: do {
-        ns ns2 https://pharma.traxion.global
-        ---
-        {
-          ns2#GetRemisionesCertificadasResponse: {
-            ns2#GetRemisionesCertificadasResult: {
-              ns2#RemisionCertificada: {
-                ns2#NO_REMISION: "0463304",
-                ns2#UMU: "031",
-                ns2#DESCRIPCION_UMU_NUM: "00420404",
-                ns2#NOMBRE_UMU: "UMF ESCARCEGA",
-                ns2#CLAVE: "010000411700",
-                ns2#CANTIDAD: "50",
-                ns2#COSTO_LINEA: "52.88",
-                ns2#PARTIDA_PRESUPUESTAL: "2530",
-                ns2#SUBPARTIDA_PRESUPUESTAL: "10000",
-                ns2#IMPORTE: "2644.0",
-                ns2#FECHA_CERTIFICACION: "2023-05-23T12:09:51",
-                ns2#LOTE: "U22N342",
-                ns2#FECHA_CADUCIDAD: "2024-11-01",
-                ns2#CODIGO_BARRAS: "7501125193927"
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-} as Object {encoding: "UTF-8", mediaType: "application/xml"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+attributes.queryParams.no_remision default ""]]></ee:set-variable>
+				<ee:set-variable variableName="umu" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.umu default ""]]></ee:set-variable>
+				<ee:set-variable variableName="clave" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.clave default ""]]></ee:set-variable>
+				<ee:set-variable variableName="lote" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.lote default ""]]></ee:set-variable>
+				<ee:set-variable variableName="codigo_barras" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.codigo_barras default ""]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="Call to orchestrator-post-remision-certified-main" doc:id="fa17a14c-6940-4e53-b0d7-381001e20853" name="orchestrator-post-remision-certified-main" />
     </flow>
     <flow name="post:\tms\shipments\order:application\xml:traxion-albatros-api-config">
         <ee:transform doc:name="Transform Message" doc:id="d1e78e5f-d68c-43cb-9e96-78273fda9d08">
