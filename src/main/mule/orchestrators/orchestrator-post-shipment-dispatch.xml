@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="orchestrator-post-shipment-dispatch" doc:id="ba7e875d-c7b5-4792-939b-e54251439cb1" >
+		<logger level="INFO" doc:name="Logger" doc:id="093f9d86-ee15-4a2e-8599-ae9a4b6c7ee5" message="#[payload]"/>
+		<flow-ref doc:name="Call-clients-process-albatros-call-post-tms-shipments-dispatch" doc:id="ee1966dc-2f29-4a56-8f54-855700be432c" name="clients-process-albatros-call-post-tms-shipments-dispatch"/>
+		<logger level="INFO" doc:name="Logger" doc:id="9668691a-e6e6-4412-84f2-9bd5fc76b73c" message="#[payload]"/>
+	</sub-flow>
+</mule>
