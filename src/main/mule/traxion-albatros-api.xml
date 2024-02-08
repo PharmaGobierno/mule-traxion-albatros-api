@@ -461,7 +461,7 @@ output application/json
       "data": {}
     }
   }
-}]]></ee:set-payload>
+} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
             </ee:message>
         </ee:transform>
         <flow-ref doc:name="Call-orchestrator-post-salesforce-siam" doc:id="a01cbfd0-9cf1-4dfc-b7cc-13e4a5d7bb25" name="orchestrator-post-salesforce-siam" />
