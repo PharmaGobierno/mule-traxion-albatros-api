@@ -244,8 +244,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 output application/json
 ---
 {
-	"clien_id": p('client.process.albatros.https.client_id'),
-	"cliens_secret": p('client.process.albatros.https.client_secret'),
+	"client_id": p('client.process.albatros.https.client_id'),
+	"client_secret": p('client.process.albatros.https.client_secret'),
 	"Content-Type": "application/json"
 }]]]></http:headers>
 			<http:query-params ><![CDATA[#[%dw 2.0
