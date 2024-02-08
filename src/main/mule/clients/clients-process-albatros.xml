@@ -238,4 +238,16 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 }]]]></http:query-params>
 		</http:request>
 	</sub-flow>
+	<sub-flow name="clients-process-albatros-call-post-salesforce-siam" doc:id="319e2b6b-4acd-48e6-86cc-6639839c518b" >
+		<http:request method="POST" doc:name="Request" doc:id="7e437680-50d9-4f3d-be4c-7f7adc118428" config-ref="HTTP_request_process_albatros" path="${client.process.albatross.https.path.post.salesforce.siam}">
+			<http:headers ><![CDATA[#[%dw 2.0
+output application/json
+---
+{
+	"clien_id": p('client.process.albatros.https.client_id'),
+	"cliens_secret": p('client.process.albatros.https.client_secret'),
+	"Content-Type": "application/json"
+}]]]></http:headers>
+		</http:request>
+	</sub-flow>
 </mule>

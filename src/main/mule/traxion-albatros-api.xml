@@ -3,7 +3,7 @@
     <http:listener-config name="traxion-albatros-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.34:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.36:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="traxion-albatros-api-main">
         <http:listener config-ref="traxion-albatros-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -367,7 +367,7 @@ attributes.queryParams.codigo_barras default ""]]></ee:set-variable>
         <flow-ref doc:name="Call to orchestrator-get-stock-report-main" doc:id="863e19f2-8466-40b7-bbe8-88aeb81118a0" name="orchestrator-get-stock-report-main" />
     </flow>
     <flow name="post:\shipments\remision\certified:application\xml:traxion-albatros-api-config">
-		<flow-ref doc:name="orchestrator-post-remision-certified-main" doc:id="11397a37-c0f3-40a2-b7c6-834af1b6379b" name="orchestrator-post-remision-certified-main" />
+        <flow-ref doc:name="orchestrator-post-remision-certified-main" doc:id="11397a37-c0f3-40a2-b7c6-834af1b6379b" name="orchestrator-post-remision-certified-main" />
     </flow>
     <flow name="post:\tms\shipments\order:application\xml:traxion-albatros-api-config">
         <ee:transform doc:name="Transform Message" doc:id="d1e78e5f-d68c-43cb-9e96-78273fda9d08">
@@ -398,7 +398,7 @@ output application/json
             </ee:message>
         </ee:transform>
     </flow>
-	<flow name="patch:\redpack\shipments\order:application\json:traxion-albatros-api-config">
+    <flow name="patch:\redpack\shipments\order:application\json:traxion-albatros-api-config">
         <logger level="INFO" doc:name="Logger" doc:id="c16201ee-1ed2-4f42-b6a4-c36af769f920" message="#[payload]" />
         <ee:transform>
             <ee:message>
@@ -427,5 +427,43 @@ attributes.queryParams.customer_name]]></ee:set-variable>
             </ee:variables>
         </ee:transform>
         <flow-ref doc:name="Call-orchestrator-post-shipment-dispatch" doc:id="ab5f221e-ead0-475f-b266-1050e3ff9fd1" name="orchestrator-post-shipment-dispatch" />
+    </flow>
+    <flow name="post:\shipments\confirmation\receipt:text\xml:traxion-albatros-api-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  traxion_response: {
+    completed_succesfully: "false",
+    error: {
+      error_type: "APIKIT-XXX",
+      user_error_description: "Detailed and plain language description of the problem",
+      system_error_description: "Verbose,plain language description of the problem for the app developer with hints about how to fix it."
+    }
+  }
+} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\salesforce\siam:application\json:traxion-albatros-api-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "traxion_response": {
+    "completed_succesfully": "true",
+    "response": {
+      "message": "successful",
+      "data": {}
+    }
+  }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <flow-ref doc:name="Call-orchestrator-post-salesforce-siam" doc:id="a01cbfd0-9cf1-4dfc-b7cc-13e4a5d7bb25" name="orchestrator-post-salesforce-siam" />
     </flow>
 </mule>
