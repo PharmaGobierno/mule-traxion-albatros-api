@@ -453,16 +453,14 @@ output application/json
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
-[
-	{
-		"existencias_apartadas": payload[0].existencias_apartadas,
-        "existencias_disponibles": payload[0].existencias_disponibles,
-        "fecha": payload[0].fecha,
-        "existencias_totales": payload[0].existencias_totales,
-        "sku": payload[0].sku,
-        "umu_account": payload[0].umu_account
-	}
-]]]></ee:set-payload>
+payload map ((item) -> {
+	"existencias_apartadas": item.existencias_apartadas,
+	"existencias_disponibles": item.existencias_disponibles,
+	"fecha": item.fecha,
+	"existencias_totales": item.existencias_totales,
+	"sku": item.sku,
+	"umu_account": item.umu_account
+})]]></ee:set-payload>
 			</ee:message>
             <ee:variables>
 				<ee:set-variable variableName="customer_name" ><![CDATA[%dw 2.0
