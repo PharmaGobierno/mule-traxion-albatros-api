@@ -239,7 +239,7 @@ output application/json
         <set-variable value="#[attributes.queryParams.customer_name]" doc:name="customer name" doc:id="be1d0801-ef27-4f89-a4b0-2826b3c52a31" variableName="customerName" />
         <set-variable value="#[attributes.queryParams.system_request]" doc:name="system_request" doc:id="38b3d7f1-3bdb-4d30-81ad-2bdfbef6691c" variableName="systemRequest" />
         <flow-ref doc:name="Call to orchestrators-post-avilability" doc:id="ea680d56-d3cf-4c42-bab1-bbcc64576ef5" name="orchestrators-post-avilability" />
-        <logger level="INFO" doc:name="payload" doc:id="ce6a2f8c-818b-417e-af0b-53dc9cffc05b" message="#[payload]" />
+        <!-- [STUDIO:"payload"]<logger level="INFO" doc:name="payload" doc:id="ce6a2f8c-818b-417e-af0b-53dc9cffc05b" message="#[payload&#93;" /> [STUDIO] -->
         <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0

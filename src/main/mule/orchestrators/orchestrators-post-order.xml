@@ -93,7 +93,7 @@ output application/json
 {
    "api":"traxion-albatros-api",
    "message_type":"json",
-   "s3": "txp.integraciones.files-qa",
+   "s3": p('client.aws.s3.bucket.files.utils.fwk'),
    "correlation_id": correlationId,
    "logger": true,
    "created_pk": now() as String {format: "uuuuMM"},
