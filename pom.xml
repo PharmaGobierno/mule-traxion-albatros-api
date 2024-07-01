@@ -14,7 +14,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<app.runtime>4.4.0-20230123</app.runtime>
-		<mule.maven.plugin.version>4.1.0</mule.maven.plugin.version>
+		<mule.maven.plugin.version>3.6.3</mule.maven.plugin.version>
 		<munit.version>2.3.13</munit.version>
 	</properties>
 
@@ -32,6 +32,25 @@
 				<extensions>true</extensions>
 				<configuration>
 					<classifier>mule-application</classifier>
+					<cloudHubDeployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<businessGroupId>${businessGroupId}</businessGroupId>
+						<muleVersion>${mule.version}</muleVersion>
+						<connectedAppClientId>${client.id}</connectedAppClientId>
+						<connectedAppClientSecret>${client.secret}</connectedAppClientSecret>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType>
+						<applicationName>${appname}</applicationName>
+						<environment>${env}</environment>
+						<workerType>${vCore}</workerType>
+						<workers>${workers}</workers>
+						<objectStoreV2>true</objectStoreV2>
+						<properties>
+							<env>${prop.env}</env>
+							<anypoint.platform.client_id>${prop.clientId}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${prop.client_secret}</anypoint.platform.client_secret>
+							<anypoint.platform.autodiscovery>${prop.autodiscovery}</anypoint.platform.autodiscovery>
+						</properties>
+					</cloudHubDeployment>
 				</configuration>
 			</plugin>
 			<plugin>
