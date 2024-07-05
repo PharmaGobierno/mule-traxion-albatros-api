@@ -3,7 +3,7 @@
     <http:listener-config name="traxion-albatros-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.40:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.43:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="traxion-albatros-api-main">
         <http:listener config-ref="traxion-albatros-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -148,23 +148,23 @@ output application/json
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c139e853-e6db-4dde-a400-6d015e131799" type="HTTP:NOT_FOUND">
-				<ee:transform doc:name="Transform Message" doc:id="a2a73e1b-210f-46c1-8660-5d8d9dffef69" >
-					<ee:message >
-						<ee:set-payload ><![CDATA[%dw 2.0
+            <on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c139e853-e6db-4dde-a400-6d015e131799" type="HTTP:NOT_FOUND">
+                <ee:transform doc:name="Transform Message" doc:id="a2a73e1b-210f-46c1-8660-5d8d9dffef69">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 error.muleMessage.typedValue]]></ee:set-payload>
-					</ee:message>
-					<ee:variables >
-						<ee:set-variable variableName="httpStatus" ><![CDATA[404]]></ee:set-variable>
-					</ee:variables>
-				</ee:transform>
-			</on-error-propagate>
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1ec18fa9-5bae-419c-8a0e-290243978ae8" type="ANY">
-				<ee:transform doc:name="Transform Message" doc:id="672ba8af-8cc8-44e9-9a76-c2d53f6ef5eb">
-					<ee:message>
-						<ee:set-payload><![CDATA[%dw 2.0
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
+            <on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1ec18fa9-5bae-419c-8a0e-290243978ae8" type="ANY">
+                <ee:transform doc:name="Transform Message" doc:id="672ba8af-8cc8-44e9-9a76-c2d53f6ef5eb">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
@@ -178,12 +178,12 @@ output application/json
     }
   }
 }]]></ee:set-payload>
-					</ee:message>
-					<ee:variables>
-						<ee:set-variable variableName="httpStatus"><![CDATA[500]]></ee:set-variable>
-					</ee:variables>
-				</ee:transform>
-			</on-error-propagate>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[500]]></ee:set-variable>
+                    </ee:variables>
+                </ee:transform>
+            </on-error-propagate>
         </error-handler>
     </flow>
     <flow name="traxion-albatros-api-console">
@@ -425,8 +425,17 @@ attributes.queryParams.lote default ""]]></ee:set-variable>
 output application/json
 ---
 attributes.queryParams.codigo_barras default ""]]></ee:set-variable>
+                <ee:set-variable variableName="certification_date_from"><![CDATA[%dw 2.0
+output application/json
+---
+(attributes.queryParams.certification_date_from default ((now() as String {format: "uuuu-MM-dd"})++ "T00:00:00")) ++ ".000-06:00"]]></ee:set-variable>
+                <ee:set-variable variableName="certification_date_to"><![CDATA[%dw 2.0
+output application/json
+---
+(attributes.queryParams.certification_date_to default ((now() as String {format: "uuuu-MM-dd"})++ "T23:59:59"))  ++ ".000-06:00"]]></ee:set-variable>
             </ee:variables>
         </ee:transform>
+        <logger level="INFO" doc:name="Logger" doc:id="8d2b384c-441d-4d8b-af4c-8f50b036657d" message="RANGO DE FECHAS  DESDE #[vars.certification_date_from] HASTA #[vars.certification_date_to]" />
         <flow-ref doc:name="orchestrator-get-remision-certified-main" doc:id="946bc46e-1094-4ec5-87c0-ec2a6ade18bc" name="orchestrator-get-remision-certified-main" />
     </flow>
     <flow name="get:\shipments\assortment:traxion-albatros-api-config">
@@ -449,6 +458,20 @@ attributes.queryParams.codigo_barras default ""]]></ee:set-variable>
         <flow-ref doc:name="Call to orchestrator-get-stock-report-main" doc:id="863e19f2-8466-40b7-bbe8-88aeb81118a0" name="orchestrator-get-stock-report-main" />
     </flow>
     <flow name="post:\shipments\remision\certified:application\xml:traxion-albatros-api-config">
+        <ee:transform doc:name="set vars query params" doc:id="ae1dba18-d012-4748-b4e0-3b770d4cfc3f">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable variableName="certification_date_from"><![CDATA[%dw 2.0
+output application/json
+---
+(attributes.queryParams.certification_date_from default ((now() as String {format: "uuuu-MM-dd"})++ "T00:00:00"))]]></ee:set-variable>
+				<ee:set-variable variableName="certification_date_to"><![CDATA[%dw 2.0
+output application/json
+---
+(attributes.queryParams.certification_date_to default ((now() as String {format: "uuuu-MM-dd"})++ "T23:59:59")) ]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="902dd4ff-9398-4beb-8484-3eb1c48f87a6" message="RANGO DE FECHAS  DESDE #[vars.certification_date_from] HASTA #[vars.certification_date_to]" />
         <flow-ref doc:name="orchestrator-post-remision-certified-main" doc:id="11397a37-c0f3-40a2-b7c6-834af1b6379b" name="orchestrator-post-remision-certified-main" />
     </flow>
     <flow name="post:\tms\shipments\order:application\xml:traxion-albatros-api-config">

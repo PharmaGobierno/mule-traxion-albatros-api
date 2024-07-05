@@ -184,7 +184,9 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 ---
 {
 	"customer_name" : vars.customerName,
-	"system_request" : vars.systemRequest
+	"system_request" : vars.systemRequest,
+	"certification_date_from" : vars.certification_date_from,
+	"certification_date_to" : vars.certification_date_to
 }]]]></http:query-params>
 		</http:request>
 	</sub-flow>
