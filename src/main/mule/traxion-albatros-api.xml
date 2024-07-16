@@ -464,11 +464,11 @@ output application/json
 				<ee:set-variable variableName="certification_date_from"><![CDATA[%dw 2.0
 output application/json
 ---
-(attributes.queryParams.certification_date_from default ((now() as String {format: "uuuu-MM-dd"})++ "T00:00:00"))]]></ee:set-variable>
+(attributes.queryParams.certification_date_from default (((now() >> "-06:00") as String {format: "uuuu-MM-dd"})++ "T00:00:00"))]]></ee:set-variable>
 				<ee:set-variable variableName="certification_date_to"><![CDATA[%dw 2.0
 output application/json
 ---
-(attributes.queryParams.certification_date_to default ((now() as String {format: "uuuu-MM-dd"})++ "T23:59:59")) ]]></ee:set-variable>
+(attributes.queryParams.certification_date_to default (((now() >> "-06:00") as String {format: "uuuu-MM-dd"})++ "T23:59:59")) ]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="902dd4ff-9398-4beb-8484-3eb1c48f87a6" message="RANGO DE FECHAS  DESDE #[vars.certification_date_from] HASTA #[vars.certification_date_to]" />
