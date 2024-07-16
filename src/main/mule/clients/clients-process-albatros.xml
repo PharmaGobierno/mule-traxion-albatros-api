@@ -185,6 +185,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 {
 	"customer_name" : vars.customerName,
 	"system_request" : vars.systemRequest,
+	"remision" : vars.remision,
 	"certification_date_from" : vars.certification_date_from,
 	"certification_date_to" : vars.certification_date_to
 }]]]></http:query-params>
