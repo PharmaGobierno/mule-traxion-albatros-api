@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+<mule xmlns:system-crm="http://www.mulesoft.org/schema/mule/system-crm" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/system-crm http://www.mulesoft.org/schema/mule/system-crm/current/mule-system-crm.xsd">
+	<system-crm:config name="System_CRM_Config" doc:name="System CRM Config" doc:id="a7816d03-a270-460a-a78a-bcaeb03bd900" property_host="${client.system.crm.https.host}" property_port="${client.system.crm.https.port}" property_basePath="/api" property_protocol="HTTPS" property_responseTimeout="${client.system.crm.https.response.timeout}" >
+		<expiration-policy maxIdleTime="${client.system.crm.https.connection.idle.timeout}" timeUnit="MILLISECONDS" />
+	</system-crm:config>
 	<sub-flow name="client-system-crm-auth" doc:id="2915622c-33b6-4d6d-b3e2-8eebb42d0127" >
-		<http:request method="POST" doc:name="Request" doc:id="b9205109-beb4-4cba-a300-4520be1a6256" config-ref="client-system-crm-HTTP-Request-configuration" path="${client.system.crm.https.path.auth.post}"/>
+		<!-- [STUDIO:"Request"]<http:request method="POST" doc:name="Request" doc:id="b9205109-beb4-4cba-a300-4520be1a6256" config-ref="client-system-crm-HTTP-Request-configuration" path="${client.system.crm.https.path.auth.post}"/> [STUDIO] -->
+		<system-crm:auth doc:name="Post auth request" doc:id="023f0b25-52aa-40a0-a29f-a62cc8590598" config-ref="System_CRM_Config" client-id="#[p('client.system.crm.https.client_id')]" client-secret="#[p('client.system.crm.https.client_secret')]"/>
 	</sub-flow>
 </mule>
