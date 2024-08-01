@@ -26,21 +26,21 @@ http://www.mulesoft.org/schema/mule/process-albatros-api http://www.mulesoft.org
 		<process-albatros-api:post-create-article doc:name="Post create article request" doc:id="7f4a07bd-3f62-47e3-9268-731365ebf11c" config-ref="Process_albatros_api_Config" client-id="#[p('client.process.albatros.api.https.client_id')]" client-secret="#[p('client.process.albatros.api.https.client_secret')]" customer-name="#[vars.customerName]" system-request="#[vars.systemRequest]"/>
 	</sub-flow>
 	<sub-flow name="clients-post-process-albatros-availability-api" doc:id="998f8d49-2c5d-4632-8c4f-b428badcaf81" >
-		<!-- [STUDIO:"Request"]<http:request method="POST" doc:name="Request" doc:id="c6da57a6-40f9-430d-ac90-9b5d234654cb" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.availability.post}">
+		<http:request method="POST" doc:name="Request" doc:id="c6da57a6-40f9-430d-ac90-9b5d234654cb" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.availability.post}">
 			<http:headers ><![CDATA[#[output application/java
-&#45;&#45;-
+---
 {
 	"client_secret" : p('client.process.albatros.https.client_id'),
 	"client_id" : p('client.process.albatros.https.client_secret')
-}&#93;&#93;&#93;></http:headers>
+}]]]></http:headers>
 			<http:query-params ><![CDATA[#[output application/java
-&#45;&#45;-
+---
 {
 	"customer_name" : vars.customerName,
 	"system_request" : vars.systemRequest
-}&#93;&#93;&#93;></http:query-params>
-		</http:request> [STUDIO] -->
-		<process-albatros-api:post-obtain-availability doc:name="Post obtain availability request" doc:id="e69cf1e9-93f4-4011-92e6-572ff314bb54" config-ref="Process_albatros_api_Config" client-id="#[p('client.process.albatros.api.https.client_id')]" client-secret="#[p('client.process.albatros.api.https.client_secret')]" customer-name="#[vars.customerName]" system-request="#[vars.systemRequest]"/>
+}]]]></http:query-params>
+		</http:request>
+		<!-- [STUDIO:"Post obtain availability request"]<process-albatros-api:post-obtain-availability doc:name="Post obtain availability request" doc:id="e69cf1e9-93f4-4011-92e6-572ff314bb54" config-ref="Process_albatros_api_Config" client-id="#[p('client.process.albatros.api.https.client_id')&#93;" client-secret="#[p('client.process.albatros.api.https.client_secret')&#93;" customer-name="#[vars.customerName&#93;" system-request="#[vars.systemRequest&#93;"/> [STUDIO] -->
 	</sub-flow>
 	<sub-flow name="clients-post-process-albatros-delivery-certification-api" doc:id="ca7a053e-82cf-44bd-aeca-dc29e5dce809" >
 		<!-- [STUDIO:"Request"]<http:request method="POST" doc:name="Request" doc:id="cfd17097-71da-4649-897e-1d73e2a69437" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.delivery.certification.post}">
