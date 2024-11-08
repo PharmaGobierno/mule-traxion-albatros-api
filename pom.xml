@@ -142,6 +142,13 @@
 			<version>1.0.51</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
+		<dependency>
+			<groupId>ab8117f6-d718-4307-b5f7-03262d589cd0</groupId>
+			<artifactId>traxion-albatros-api</artifactId>
+			<version>1.0.45</version>
+			<classifier>raml</classifier>
+			<type>zip</type>
+		</dependency>
 	</dependencies>
 
 	<repositories>

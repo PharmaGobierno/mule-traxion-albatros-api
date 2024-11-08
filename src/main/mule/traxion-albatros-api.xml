@@ -554,8 +554,8 @@ attributes.queryParams.customer_name]]></ee:set-variable>
         <flow-ref doc:name="Call-orchestrator-post-salesforce-siam" doc:id="a01cbfd0-9cf1-4dfc-b7cc-13e4a5d7bb25" name="orchestrator-post-salesforce-siam" />
     </flow>
     <flow name="post:\appoinment\certification:application\json:traxion-albatros-api-config">
-        <flow-ref doc:name="orchestrator-post-appointment-cetification-main" doc:id="4041ab4a-ddd5-4e60-9e3d-089e2515efaf" name="orchestrator-post-appointment-cetification-main"/>
-		<ee:transform doc:name="Transform Message">
+        <flow-ref doc:name="orchestrator-post-appointment-cetification-main" doc:id="4041ab4a-ddd5-4e60-9e3d-089e2515efaf" name="orchestrator-post-appointment-cetification-main" />
+        <ee:transform doc:name="Transform Message">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
