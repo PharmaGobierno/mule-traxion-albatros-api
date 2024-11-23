@@ -58,6 +58,27 @@ http://www.mulesoft.org/schema/mule/process-albatros http://www.mulesoft.org/sch
 		</http:request> [STUDIO] -->
 		<process-albatros:create-delivery-certificate doc:name="Create Delivery Certificate" doc:id="e7a75043-a126-4a24-9914-1420ffd28d89" config-ref="Process_Albatros_Config" customer-name="#[vars.customerName]" system-request="#[vars.systemRequest]" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]"/>
 	</sub-flow>
+	<sub-flow name="clients-process-albatros-call-document-certification" doc:id="06ee588a-5640-4cc2-8052-7a4cce439fa1" >
+		<http:request method="POST" doc:name="Request" doc:id="132df4e6-e162-4a59-8f7c-a007cc5c7630" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.post.document.certification}" >
+			<non-repeatable-stream />
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : p('client.process.albatros.api.https.client_id'),
+	"client_id" : p('client.process.albatros.api.https.client_secret')
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	("movement_zone" : attributes.queryParams.movement_zone) 
+		if(attributes.queryParams.movement_zone?),
+	("counting_zone" : attributes.queryParams.counting_zone)
+		if(attributes.queryParams.counting_zone?),
+	"customer_name" : vars.customerName,
+	"system_request" : vars.systemRequest
+}]]]></http:query-params>
+		</http:request>
+	</sub-flow>
 	<sub-flow name="clients-post-process-albatros-inventory-assignment-api" doc:id="c4ad06f7-f69f-4abd-bbad-f2ee954b7038" >
 		<!-- [STUDIO:"Request"]<http:request method="POST" doc:name="Request" doc:id="b682261c-26e3-4190-837a-76ac59ba7955" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.inventory.assignment.post}">
 			<http:headers ><![CDATA[#[output application/java
