@@ -1,0 +1,10 @@
+%dw 2.0
+
+type auto_9de8a181_03dc_4282_8646_dec20083d7c8_Input_Payload = {
+  order_number: String, 
+  base64: String, 
+  umu_state?: String | Null, 
+  document_id: String, 
+  _?: Any
+}
+

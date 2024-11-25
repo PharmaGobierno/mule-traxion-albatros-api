@@ -1,0 +1,18 @@
+%dw 2.0
+
+type auto_06ee588a_5640_4cc2_8052_7a4cce439fa1_Output_Payload = {
+  traxion_response: {
+    response: {
+      data: { _?: Any } {"label": "Data",
+      "description": "Data or information about the process."}, 
+      message: String, 
+      _?: Any
+    } {"label": "Response",
+    "description": "It contains the message response and other data."}, 
+    completed_succesfully: String, 
+    _?: Any
+  } {"label": "Traxion_response",
+  "description": "It contains the body response."}, 
+  _?: Any
+} {"description": "Shipment article response."}
+
