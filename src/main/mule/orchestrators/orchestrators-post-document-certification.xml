@@ -6,6 +6,6 @@
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="orchestrators-post-document-certification" doc:id="9de8a181-03dc-4282-8646-dec20083d7c8" >
 		<logger level="INFO" doc:name="Payload" doc:id="e4513dfc-360a-4716-a4d6-0d3794b0253e" message="#[payload]"/>
-		<flow-ref doc:name="clients-process-albatros-call-document-certification" doc:id="e6a77698-76e2-4ba0-962d-036dc0381695" name="clients-process-albatros-call-document-certification"/>
+		<flow-ref doc:name="clients-post-process-albatros-delivery-certification-api" doc:id="e6a77698-76e2-4ba0-962d-036dc0381695" name="clients-post-process-albatros-delivery-certification-api"/>
 	</sub-flow>
 </mule>
