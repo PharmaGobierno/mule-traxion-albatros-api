@@ -3,7 +3,7 @@
     <http:listener-config name="traxion-albatros-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.47:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.48:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="traxion-albatros-api-main">
         <http:listener config-ref="traxion-albatros-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -573,10 +573,10 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="post:\shipments\v2\delivery_certification:application\json:traxion-albatros-api-config">
-		<set-variable value="#[attributes.queryParams.customer_name]" doc:name="customer name" doc:id="1d7f9185-8dbf-40a8-be70-5c1dc11ff8b0" variableName="customerName" />
-		<set-variable value='#[attributes.queryParams.system_request default "CRM"]' doc:name="system_request" doc:id="e61820ac-08a8-4f80-bc93-4f8b3b50a03e" variableName="systemRequest" />
-		<flow-ref doc:name="orchestrators-post-document-certification" doc:id="00791d79-5459-404c-89f6-67d03e4a6a40" name="orchestrators-post-document-certification" />
-		<logger level="INFO" doc:name="payload" doc:id="b699803f-f3ee-494f-bc3f-40969e3eb289" message="#[payload]" />
+        <set-variable value="#[attributes.queryParams.customer_name]" doc:name="customer name" doc:id="1d7f9185-8dbf-40a8-be70-5c1dc11ff8b0" variableName="customerName" />
+        <set-variable value="#[attributes.queryParams.system_request default &quot;CRM&quot;]" doc:name="system_request" doc:id="e61820ac-08a8-4f80-bc93-4f8b3b50a03e" variableName="systemRequest" />
+        <flow-ref doc:name="orchestrators-post-document-certification" doc:id="00791d79-5459-404c-89f6-67d03e4a6a40" name="orchestrators-post-document-certification" />
+        <logger level="INFO" doc:name="payload" doc:id="b699803f-f3ee-494f-bc3f-40969e3eb289" message="#[payload]" />
     </flow>
     <flow name="post:\store\evidence:application\json:traxion-albatros-api-config">
         <ee:transform doc:name="Transform Message">
