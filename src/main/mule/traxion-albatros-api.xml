@@ -579,21 +579,6 @@ output application/json
         <logger level="INFO" doc:name="payload" doc:id="b699803f-f3ee-494f-bc3f-40969e3eb289" message="#[payload]" />
     </flow>
     <flow name="post:\store\evidence:application\json:traxion-albatros-api-config">
-        <ee:transform doc:name="Transform Message">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-{
-  traxion_response: {
-    completed_succesfully: "true",
-    response: {
-      message: "correctly",
-      data: ""
-    }
-  }
-} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
+		<flow-ref doc:name="Call to orchestrator-post-store-evidence-main" doc:id="75a76c97-a19f-4037-853c-092239905121" name="orchestrator-post-store-evidence-main"/>
     </flow>
 </mule>

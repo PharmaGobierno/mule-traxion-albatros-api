@@ -59,16 +59,16 @@ http://www.mulesoft.org/schema/mule/process-albatros http://www.mulesoft.org/sch
 		<process-albatros:create-delivery-certificate doc:name="Create Delivery Certificate" doc:id="e7a75043-a126-4a24-9914-1420ffd28d89" config-ref="Process_Albatros_Config" customer-name="#[vars.customerName]" system-request="#[vars.systemRequest]" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]"/>
 	</sub-flow>
 	<sub-flow name="clients-process-albatros-call-document-certification" doc:id="06ee588a-5640-4cc2-8052-7a4cce439fa1" >
-		<http:request method="POST" doc:name="Request" doc:id="132df4e6-e162-4a59-8f7c-a007cc5c7630" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.post.document.certification}" >
+		<!-- [STUDIO:"Request"]<http:request method="POST" doc:name="Request" doc:id="132df4e6-e162-4a59-8f7c-a007cc5c7630" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.post.document.certification}" >
 			<non-repeatable-stream />
 			<http:headers ><![CDATA[#[output application/java
----
+&#45;&#45;-
 {
 	"client_secret" : p('client.process.albatros.api.https.client_id'),
 	"client_id" : p('client.process.albatros.api.https.client_secret')
-}]]]></http:headers>
+}&#93;&#93;&#93;></http:headers>
 			<http:query-params ><![CDATA[#[output application/java
----
+&#45;&#45;-
 {
 	("movement_zone" : attributes.queryParams.movement_zone) 
 		if(attributes.queryParams.movement_zone?),
@@ -76,8 +76,9 @@ http://www.mulesoft.org/schema/mule/process-albatros http://www.mulesoft.org/sch
 		if(attributes.queryParams.counting_zone?),
 	"customer_name" : vars.customerName,
 	"system_request" : vars.systemRequest
-}]]]></http:query-params>
-		</http:request>
+}&#93;&#93;&#93;></http:query-params>
+		</http:request> [STUDIO] -->
+		<process-albatros:create-delivery-certificate-v2 doc:name="Create Delivery Certificate V2" doc:id="bfce051b-0797-4e02-aaf1-4d408a844a58" config-ref="Process_Albatros_Config" customer-name="#[vars.customerName]" system-request="#[vars.systemRequest]" client-id="#[p('client.process.albatros.api.https.client_id')]" client-secret="#[p('client.process.albatros.api.https.client_secret')]"/>
 	</sub-flow>
 	<sub-flow name="clients-post-process-albatros-inventory-assignment-api" doc:id="c4ad06f7-f69f-4abd-bbad-f2ee954b7038" >
 		<!-- [STUDIO:"Request"]<http:request method="POST" doc:name="Request" doc:id="b682261c-26e3-4190-837a-76ac59ba7955" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.inventory.assignment.post}">
@@ -224,6 +225,7 @@ http://www.mulesoft.org/schema/mule/process-albatros http://www.mulesoft.org/sch
 	"certification_date_to" : vars.certification_date_to
 }]]]></http:query-params>
 		</http:request>
+		<!-- [STUDIO:"Get Remission Certified"]<process-albatros:get-remission-certified doc:name="Get Remission Certified" doc:id="1048d0ef-fca2-4976-a43d-4b61a640bc5d" config-ref="Process_Albatros_Config" no-remision="vars.remision" client-id="p('client.process.albatros.api.https.client_id')" client-secret="p('client.process.albatros.api.https.client_secret')"/> [STUDIO] -->
 	</sub-flow>
 	<sub-flow name="clients-process-albatros-call-get-boxes-by-order-id" doc:id="ac9cb58e-8c90-4122-8c37-8c966f5c147b" >
 		<!-- [STUDIO:"Request"]<http:request method="GET" doc:name="Request" doc:id="964f29c7-0fbe-421f-bfcf-d9d38b1a56e0" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.get.boxes.by.order.post}" >
@@ -245,22 +247,23 @@ http://www.mulesoft.org/schema/mule/process-albatros http://www.mulesoft.org/sch
 		<process-albatros:get-number-of-boxes-by-order doc:name="Get Number of Boxes by Order" doc:id="752010a7-0b3d-4d77-93ca-ace19dba4c55" config-ref="Process_Albatros_Config" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]" lodnum="#[vars.lodnum]" customer-name="#[vars.customerName]" system-request="#[vars.systemRequest]"/>
 	</sub-flow>
 	<sub-flow name="clients-process-albatros-call-post-tms-shipments-order" doc:id="03254759-dd27-402f-b1f4-b1f3034bf818" >
-		<http:request method="POST" doc:name="Request" doc:id="7cf5e604-ff87-4309-863d-40a73f44a95c" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.post.tms.shipments.order}">
+		<!-- [STUDIO:"Request"]<http:request method="POST" doc:name="Request" doc:id="7cf5e604-ff87-4309-863d-40a73f44a95c" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.post.tms.shipments.order}">
 			<http:headers ><![CDATA[#[output application/java
----
+&#45;&#45;-
 {
 	"client_secret" : p('client.process.albatros.https.client_secret'),
 	"Conten-Type" : "application/json",
 	"client_id" : p('client.process.albatros.https.client_id')
-}]]]></http:headers>
+}&#93;&#93;&#93;></http:headers>
 			<http:query-params ><![CDATA[#[output application/java
----
+&#45;&#45;-
 {
 	"customer_name" : vars.customer_name
-}]]]></http:query-params>
-		</http:request>
+}&#93;&#93;&#93;></http:query-params>
+		</http:request> [STUDIO] -->
 		<!--  <process-albatros-api:post-create-new-order doc:name="Post create new order request" doc:id="53ee87d3-a86c-4985-9ed1-514860265220" config-ref="Process_albatros_api_Config" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]" customer-name="#[vars.customer_name]"/>
 	-->
+		<process-albatros:create-tms-order doc:name="Create TMS Order" doc:id="650a88e7-f925-40ac-b5ad-b5a522c75ca7" config-ref="Process_Albatros_Config" customer-name="#[vars.customer_name]" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]"/>
 	</sub-flow>
 	<sub-flow name="clients-process-albatros-call-post-tms-shipments-dispatch" doc:id="c1748695-8f68-4ac7-8639-c866681a169c" >
 		<!-- [STUDIO:"Request"]<http:request method="POST" doc:name="Request" doc:id="81f011a2-41d4-4373-9f0d-327d0bef5d22" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.post.tms.order.dispatch}" >
@@ -277,44 +280,44 @@ http://www.mulesoft.org/schema/mule/process-albatros http://www.mulesoft.org/sch
 	"customer_name" : vars.customer_name
 }&#93;&#93;&#93;></http:query-params>
 		</http:request> [STUDIO] -->
-		<process-albatros:create-dispatch doc:name="Create dispatch" doc:id="8921584d-8d66-4146-9c6f-cb953b8d3d4f" config-ref="Process_Albatros_Config" customer-name="#[vars.customer_name]" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]"/>
-	</sub-flow>
-	<sub-flow name="clients-process-albatros-call-post-salesforce-siam" doc:id="319e2b6b-4acd-48e6-86cc-6639839c518b" >
-		<http:request method="POST" doc:name="Request" doc:id="7e437680-50d9-4f3d-be4c-7f7adc118428" config-ref="HTTP_request_process_albatros" path="${client.process.albatross.https.path.post.salesforce.siam}">
-			<http:headers ><![CDATA[#[%dw 2.0
-output application/json
----
-{
-	"client_id": p('client.process.albatros.https.client_id'),
-	"client_secret": p('client.process.albatros.https.client_secret'),
-	"Content-Type": "application/json"
-}]]]></http:headers>
-			<http:query-params ><![CDATA[#[%dw 2.0
-output application/json
----
-{
-	"customer_name": vars.customer_name
-}]]]></http:query-params>
-		</http:request>
-		<!-- <process-albatros-api:create-siam doc:name="Post request siam order creation" doc:id="6a012b16-ef4d-42ff-a5fa-ea66628d2099" config-ref="Process_albatros_api_Config" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]" customer-name="#[vars.customer_name]"/>
-	 -->
+		<process-albatros:create-order-dispatch doc:name="Create dispatch" doc:id="8921584d-8d66-4146-9c6f-cb953b8d3d4f" config-ref="Process_Albatros_Config" customer-name="#[vars.customer_name]" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]"/>
 	</sub-flow>
 	<sub-flow name="clients-process-albatros-call-service-appointment-certification" doc:id="7d01dc5d-80e5-47c9-95c7-74a03ca9b095" >
-		<http:request method="POST" doc:name="Request" doc:id="15d22049-3af6-4b30-8664-24663c1d1f4b" config-ref="HTTP_request_process_albatros" path="${client.process.albatross.https.path.post.appointment.certification}" >
+		<!-- [STUDIO:"Request"]<http:request method="POST" doc:name="Request" doc:id="15d22049-3af6-4b30-8664-24663c1d1f4b" config-ref="HTTP_request_process_albatros" path="${client.process.albatross.https.path.post.appointment.certification}" >
 			<http:headers ><![CDATA[#[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
 	"client_id": p('client.process.albatros.https.client_id'),
 	"client_secret": p('client.process.albatros.https.client_secret'),
 	"Content-Type": "application/json"
-}]]]></http:headers>
+}&#93;&#93;&#93;></http:headers>
 			<http:query-params ><![CDATA[#[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
 	"customer_name": vars.customer_name
-}]]]></http:query-params>
-		</http:request>
+}&#93;&#93;&#93;></http:query-params>
+		</http:request> [STUDIO] -->
+		<process-albatros:appointment-certification doc:name="Appointment Certification" doc:id="3bed4400-c467-4869-aef4-ad58f4ae5583" config-ref="Process_Albatros_Config" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]"/>
+	</sub-flow>
+	<sub-flow name="clients-process-albatros-call-service-store-evidence" doc:id="2ed5271e-af57-4e65-a25c-e80f19934abc" >
+		<!-- [STUDIO:"Request"]<http:request method="POST" doc:name="Request" doc:id="a3150772-961f-4ae0-bb46-61a271fa7afa" config-ref="HTTP_request_process_albatros" path="${client.process.albatross.https.path.post.appointment.certification}" >
+			<http:headers ><![CDATA[#[%dw 2.0
+output application/json
+&#45;&#45;-
+{
+	"client_id": p('client.process.albatros.https.client_id'),
+	"client_secret": p('client.process.albatros.https.client_secret'),
+	"Content-Type": "application/json"
+}&#93;&#93;&#93;></http:headers>
+			<http:query-params ><![CDATA[#[%dw 2.0
+output application/json
+&#45;&#45;-
+{
+	"customer_name": vars.customer_name
+}&#93;&#93;&#93;></http:query-params>
+		</http:request> [STUDIO] -->
+		<process-albatros:file-reception doc:name="File Reception" doc:id="1c46082b-0c94-4fce-889f-78948101b5c7" config-ref="Process_Albatros_Config" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]"/>
 	</sub-flow>
 </mule>
