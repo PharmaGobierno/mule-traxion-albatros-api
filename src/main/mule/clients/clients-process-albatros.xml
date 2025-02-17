@@ -78,7 +78,7 @@ http://www.mulesoft.org/schema/mule/process-albatros http://www.mulesoft.org/sch
 	"system_request" : vars.systemRequest
 }&#93;&#93;&#93;></http:query-params>
 		</http:request> [STUDIO] -->
-		<process-albatros:create-delivery-certificate-v2 doc:name="Create Delivery Certificate V2" doc:id="bfce051b-0797-4e02-aaf1-4d408a844a58" config-ref="Process_Albatros_Config" customer-name="#[vars.customerName]" system-request="#[vars.systemRequest]" client-id="#[p('client.process.albatros.api.https.client_id')]" client-secret="#[p('client.process.albatros.api.https.client_secret')]"/>
+		<process-albatros:create-delivery-certificate-v2 doc:name="Create Delivery Certificate V2" doc:id="bfce051b-0797-4e02-aaf1-4d408a844a58" config-ref="Process_Albatros_Config" customer-name="#[vars.customerName]" system-request="#[vars.systemRequest]" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]"/>
 	</sub-flow>
 	<sub-flow name="clients-post-process-albatros-inventory-assignment-api" doc:id="c4ad06f7-f69f-4abd-bbad-f2ee954b7038" >
 		<!-- [STUDIO:"Request"]<http:request method="POST" doc:name="Request" doc:id="b682261c-26e3-4190-837a-76ac59ba7955" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.inventory.assignment.post}">
