@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="orchestrator-post-store-evidence-main" doc:id="318cd33a-22dd-480b-83f2-6e8358c675c2" >
+		<logger level="INFO" doc:name="Logger" doc:id="baed399a-99ec-4521-b267-7612acb329c2" message="#[payload]"/>
+		<flow-ref doc:name="clients-process-albatros-call-service-store-evidence" doc:id="d646a83e-cd11-457b-bdae-67b8fa4dd78d" name="clients-process-albatros-call-service-store-evidence"/>
+	</sub-flow>
+</mule>
