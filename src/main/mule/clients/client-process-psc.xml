@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:request-config name="client-process-psc_HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="d8598492-c1d3-4305-818c-34f0f66a9234" responseTimeout="${client.process.psc.https.response.timeout}">
+		<http:request-connection protocol="HTTPS" host="${client.process.psc.https.host}" port="${client.process.psc.https.port}" connectionIdleTimeout="600000" responseBufferSize="2048"/>
+	</http:request-config>
+	<sub-flow name="client-process-psc-call-delivery-certification" doc:id="b82e040e-dc67-4a58-b7c6-b9bbe08ab06b" >
+		<http:request method="POST" doc:name="Request" doc:id="4972eeab-5bf2-425a-9219-c8f875b11a62" config-ref="client-process-psc_HTTP_Request_configuration" path="${client.process.psc.https.path.delivery.certification.post}">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : p('client.process.psc.https.client_secret'),
+	"client_id" : p('client.process.psc.https.client_id')
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"customer_name" : vars.customerName,
+	"system_request" : vars.systemRequest
+}]]]></http:query-params>
+		</http:request>
+	</sub-flow>
+</mule>

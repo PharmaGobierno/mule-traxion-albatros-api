@@ -278,7 +278,6 @@ output application/json
         <set-variable value="#[attributes.queryParams.customer_name]" doc:name="customer name" doc:id="81ee4e2e-43cc-4e27-b71d-912af89ca112" variableName="customerName" />
         <set-variable value="#[attributes.queryParams.system_request default &quot;CRM&quot;]" doc:name="system_request" doc:id="2fc077fe-e1ef-4939-a525-5bda24e7ebb3" variableName="systemRequest" />
         <flow-ref doc:name="Call to orchestrators-post-delivery-certification" doc:id="ff132753-73eb-43f6-af93-e443ba61cc64" name="orchestrators-post-delivery-certification-" />
-        <logger level="INFO" doc:name="payload" doc:id="4f3bf826-1f63-4ad2-bfb9-d9c2d133d277" message="#[payload]" />
         <!-- [STUDIO:"Transform Message"]		<ee:transform>
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
