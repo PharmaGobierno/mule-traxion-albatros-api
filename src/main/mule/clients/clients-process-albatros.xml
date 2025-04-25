@@ -56,7 +56,8 @@ http://www.mulesoft.org/schema/mule/process-albatros http://www.mulesoft.org/sch
 	"system_request" : vars.systemRequest
 }&#93;&#93;&#93;></http:query-params>
 		</http:request> [STUDIO] -->
-		<process-albatros:create-delivery-certificate doc:name="Create Delivery Certificate" doc:id="e7a75043-a126-4a24-9914-1420ffd28d89" config-ref="Process_Albatros_Config" customer-name="#[vars.customerName]" system-request="#[vars.systemRequest]" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]"/>
+		<!-- [STUDIO:"Create Delivery Certificate"]<process-albatros:create-delivery-certificate doc:name="Create Delivery Certificate" doc:id="e7a75043-a126-4a24-9914-1420ffd28d89" config-ref="Process_Albatros_Config" customer-name="#[vars.customerName&#93;" system-request="#[vars.systemRequest&#93;" client-id="#[p('client.process.albatros.https.client_id')&#93;" client-secret="#[p('client.process.albatros.https.client_secret')&#93;"/> [STUDIO] -->
+		<process-albatros:create-delivery-certificate doc:name="Create Delivery Certificate" doc:id="74318369-a539-4c68-9fdc-2fee9c53c8e7" config-ref="Process_Albatros_Config" customer-name="#[vars.customerName]" system-request="#[vars.systemRequest]" client-id="#[p('client.process.albatros.https.client_id')]" client-secret="#[p('client.process.albatros.https.client_secret')]"/>
 	</sub-flow>
 	<sub-flow name="clients-process-albatros-call-document-certification" doc:id="06ee588a-5640-4cc2-8052-7a4cce439fa1" >
 		<!-- [STUDIO:"Request"]<http:request method="POST" doc:name="Request" doc:id="132df4e6-e162-4a59-8f7c-a007cc5c7630" config-ref="HTTP_request_process_albatros" path="${client.process.albatros.https.path.post.document.certification}" >

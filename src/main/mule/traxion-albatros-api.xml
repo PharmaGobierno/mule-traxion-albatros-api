@@ -3,7 +3,7 @@
     <http:listener-config name="traxion-albatros-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.52:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.53:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="traxion-albatros-api-main">
         <http:listener config-ref="traxion-albatros-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -540,18 +540,6 @@ output application/json
             </ee:message>
         </ee:transform>
     </flow>
-    <flow name="post:\salesforce\siam:application\json:traxion-albatros-api-config">
-        <ee:transform doc:name="Transform Message" doc:id="04523136-90ad-47dd-9d84-a4c13829c500">
-            <ee:message />
-            <ee:variables>
-                <ee:set-variable variableName="customer_name"><![CDATA[%dw 2.0
-output application/json
----
-attributes.queryParams.customer_name]]></ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <flow-ref doc:name="Call-orchestrator-post-salesforce-siam" doc:id="a01cbfd0-9cf1-4dfc-b7cc-13e4a5d7bb25" name="orchestrator-post-salesforce-siam" />
-    </flow>
     <flow name="post:\appoinment\certification:application\json:traxion-albatros-api-config">
         <flow-ref doc:name="orchestrator-post-appointment-cetification-main" doc:id="4041ab4a-ddd5-4e60-9e3d-089e2515efaf" name="orchestrator-post-appointment-cetification-main" />
         <ee:transform doc:name="Transform Message">
@@ -578,6 +566,9 @@ output application/json
         <logger level="INFO" doc:name="payload" doc:id="b699803f-f3ee-494f-bc3f-40969e3eb289" message="#[payload]" />
     </flow>
     <flow name="post:\store\evidence:application\json:traxion-albatros-api-config">
-		<flow-ref doc:name="Call to orchestrator-post-store-evidence-main" doc:id="75a76c97-a19f-4037-853c-092239905121" name="orchestrator-post-store-evidence-main"/>
+        <flow-ref doc:name="Call to orchestrator-post-store-evidence-main" doc:id="75a76c97-a19f-4037-853c-092239905121" name="orchestrator-post-store-evidence-main" />
+    </flow>
+    <flow name="post:\kafka\order:application\json:traxion-albatros-api-config">
+		<flow-ref doc:name="Call to orchestrator-post-create-order-main" doc:id="dc8397d2-06fc-4197-9af1-d1eb524d99bf" name="orchestrator-post-create-order-main"/>
     </flow>
 </mule>
