@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:kafka="http://www.mulesoft.org/schema/mule/kafka"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/kafka http://www.mulesoft.org/schema/mule/kafka/current/mule-kafka.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<kafka:producer-config name="Apache_Kafka_Producer_configuration" doc:name="Apache Kafka Producer configuration" doc:id="398469cb-efc3-4db4-9f38-aae6b94976bf" topic="wms-shipment-status">
+		<kafka:producer-sasl-plain-connection username="blueyonder-dev" password="Co7Mo3Bo5" endpointIdentificationAlgorithm="disabled">
+			<tls:context >
+				<tls:trust-store insecure="true" />
+			</tls:context>
+			<kafka:bootstrap-servers >
+				<kafka:bootstrap-server value="34.169.187.202:9094" />
+			</kafka:bootstrap-servers>
+		</kafka:producer-sasl-plain-connection>
+	</kafka:producer-config>
+	<kafka:producer-config name="Apache_Kafka_Traxion" doc:name="Apache Kafka Producer configuration" doc:id="86458d1d-7777-40bb-abbd-17f50b2f2b9e" >
+		<kafka:producer-sasl-plain-connection username="s.garciam" password="Aa4xTr8jZp" endpointIdentificationAlgorithm="disabled" >
+			<tls:context >
+				<tls:trust-store insecure="true" />
+			</tls:context>
+			<kafka:bootstrap-servers >
+				<kafka:bootstrap-server value="broker-dev.traxion.global:9094" />
+			</kafka:bootstrap-servers>
+		</kafka:producer-sasl-plain-connection>
+	</kafka:producer-config>
+	<kafka:consumer-config name="Apache_Kafka_Consumer_configuration" doc:name="Apache Kafka Consumer configuration" doc:id="36f390cc-d53d-40c6-96a7-5e1c75144a8f" >
+		<kafka:consumer-sasl-plain-connection username="s.garciam" password="Aa4xTr8jZp" >
+			<tls:context >
+				<tls:trust-store insecure="true" />
+			</tls:context>
+			<kafka:bootstrap-servers >
+				<kafka:bootstrap-server value="broker-dev.traxion.global:9094" />
+			</kafka:bootstrap-servers>
+			<kafka:topic-patterns >
+				<kafka:topic-pattern value="traxporta.sap.01.in" />
+			</kafka:topic-patterns>
+		</kafka:consumer-sasl-plain-connection>
+	</kafka:consumer-config>
+	<!-- [STUDIO:"orchestrator-post-kafka-message-create-orderFlow"]<flow name="orchestrator-post-kafka-message-create-orderFlow" doc:id="5b57d842-aec4-492b-8a1b-33ebe03c2dd5" >
+		<scheduler doc:name="Scheduler" doc:id="46f28fef-b029-496b-8873-deca7796430d" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="50000" timeUnit="MINUTES"/>
+			</scheduling-strategy>
+		</scheduler>
+		<ee:transform doc:name="Set Payload" doc:id="b8d2b26a-0a9d-4d69-b0c8-c1d2cbe8e621">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+{
+    "order_number": "101-7000333297",
+    "order_id": "101-7000333297",
+    "umu": "593",
+    "load": "402120",
+    "umu_name": "Prueba MULE",
+    "route": "593",
+    "box_quantity": 1,
+    "application_date": "20/04/2025",
+    "user": {
+    },
+    "shipment_type": "Extraordinario",
+    "skus": [
+        {
+            "sku": "010000127200",
+            "brand": "TEST-BRAND",
+            "quantity": 50,
+            "avg_cost": "7.98",
+            "lote_info": [
+                {
+                    "lot_number": "062025",
+                    "expiration_date": "28/02/2027",
+                    "quantity": 50
+                }
+            &#93;
+        }
+    &#93;,
+    "vesion": "",
+    "status": "DIPATCHED",
+    "origin_timestamp": ""
+}&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="Call to orchestrator-post-create-order-main" doc:id="45b0c0dc-1e7c-4f20-a8ff-af49e6c87648" name="orchestrator-post-create-order-main"/>
+	</flow> [STUDIO] -->
+	<sub-flow name="orchestrator-post-create-order-main" doc:id="630dbd29-a5df-40a4-99d7-765fdf1fa6b3" >
+		<logger level="INFO" doc:name="Logger" doc:id="a32c757e-e213-42bd-b77e-780edecd6428" message="#[payload]"/>
+		<kafka:publish doc:name="Publish" doc:id="03dd3a12-e49b-455d-8d4d-5cfaf66752ad" config-ref="Apache_Kafka_Producer_configuration" topic="wms-shipment-status"/>
+		<ee:transform doc:name="Transform Message" doc:id="b4cd0d9b-c1e9-4d23-af57-5a8189a3e127" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger1" doc:id="8777dd09-819c-4b3d-9b48-bcac0b8e6d6f" message="#[payload]" />
+	</sub-flow>
+	<!-- [STUDIO:"orchestrator-post-kafka-message-create-orderFlow-1"]<flow name="orchestrator-post-kafka-message-create-orderFlow-1" doc:id="4a9b7c29-cd67-4c77-8b95-8b05cd806555" >
+		<scheduler doc:name="Scheduler" doc:id="73d72db6-86e5-4ecb-a2f4-007f01d7e39d" >
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</scheduler>
+		<ee:transform doc:name="Transform Message" doc:id="c8110347-7cce-4594-a5c9-4b64c5744145" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+{
+  "IM_KUNNR": "",
+  "IM_NAME_ORG1": "Empresa Ejemplo Mule",
+  "IM_TAXNUMXL": "RFC123456789",
+  "IM_COUNTRY": "MX",
+  "IM_CITY1": "CDMX"
+}&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<kafka:publish doc:name="Publish" doc:id="1a1c41b3-f2a9-4b16-9c14-4b5979d285a8" config-ref="Apache_Kafka_Traxion" topic="traxporta.sap.01.in"/>
+		<ee:transform doc:name="Transform Message" doc:id="e1bce0d7-1a16-457f-9a17-3dbca1cac12b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+payload&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="a692aa06-f8ca-429d-9b7b-17fa6b1e2056" message="payload"/>
+	</flow> [STUDIO] -->
+	<!-- [STUDIO:"orchestrator-post-kafka-message-create-orderFlow2"]<flow name="orchestrator-post-kafka-message-create-orderFlow2" doc:id="c98c9a01-de8d-4144-b70a-7ecec3a3918f" >
+		<kafka:message-listener doc:name="Message listener" doc:id="94f914a6-d921-4fcf-9ecd-d56d71d6fdcd" config-ref="Apache_Kafka_Consumer_configuration"/>
+		<ee:transform doc:name="Transform Message" doc:id="b8111044-c002-4637-808f-f2e4fd6a3061">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+payload&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="40803c41-ab07-4dbc-b1d7-096ed831429c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+{
+    "message_id": "MSG001",
+    "timestamp": now(),
+    "payload": {
+      "IM_KUNNR": "1000001",
+      "IT_MENSAJE": {
+        "ID": "0001",
+        "DESC_M": "Cliente creado correctamente"
+      }
+    },
+    "source_system": "SAP",
+    "target_system": "TRAXPORTA"
+}&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="377d1bf8-1135-40ec-9d54-ab136eb6028c" message="payload" />
+		<kafka:publish doc:name="Publish" doc:id="776d18db-3c13-4647-bc20-751855c7b4b4" config-ref="Apache_Kafka_Traxion" topic="sap.traxporta.01.out" />
+		<ee:transform doc:name="Transform Message" doc:id="d45d6cab-b557-4db9-8fed-64f57a38d28c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+&#45;&#45;-
+payload&#93;&#93;></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger1" doc:id="71efbcc1-2c06-46ae-aeed-dca872c9e413" message="payload" />
+	</flow> [STUDIO] -->
+</mule>
