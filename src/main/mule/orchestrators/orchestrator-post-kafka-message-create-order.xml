@@ -87,7 +87,8 @@ output application/json
 	</flow> [STUDIO] -->
 	<sub-flow name="orchestrator-post-create-order-main" doc:id="630dbd29-a5df-40a4-99d7-765fdf1fa6b3" >
 		<logger level="INFO" doc:name="Logger" doc:id="a32c757e-e213-42bd-b77e-780edecd6428" message="#[payload]"/>
-		<kafka:publish doc:name="Publish" doc:id="03dd3a12-e49b-455d-8d4d-5cfaf66752ad" config-ref="Apache_Kafka_Producer_configuration" topic="wms-shipment-status"/>
+		<!-- [STUDIO:"Publish"]<kafka:publish doc:name="Publish" doc:id="03dd3a12-e49b-455d-8d4d-5cfaf66752ad" config-ref="Apache_Kafka_Producer_configuration" topic="wms-shipment-status"/> [STUDIO] -->
+		<flow-ref doc:name="client-pub-sub-create-order" doc:id="537dfea4-f61f-4385-885b-af1003a1029a" name="client-pub-sub-create-order"/>
 		<ee:transform doc:name="Transform Message" doc:id="b4cd0d9b-c1e9-4d23-af57-5a8189a3e127" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0

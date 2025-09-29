@@ -1,0 +1,13 @@
+%dw 2.0
+
+type auto_bb3ca948_b2d6_4c82_a909_c25e88b6003f_Input_Payload = {|
+  offset?: Number, 
+  partition?: Number, 
+  serializedKeySize?: Number, 
+  serializedValueSize?: Number, 
+  timestamp?: DateTime {"typeId": "java.time.ZonedDateTime"}, 
+  topic?: String
+|} {"typeAlias": "KafkaMessageMetadata",
+"typeId": "com.mulesoft.connectors.kafka.api.operation.KafkaMessageMetadata",
+"class": "com.mulesoft.connectors.kafka.api.operation.KafkaMessageMetadata"}
+
