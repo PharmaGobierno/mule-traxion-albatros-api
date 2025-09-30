@@ -3,7 +3,7 @@
     <http:listener-config name="traxion-albatros-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8082" protocol="HTTPS" tlsContext="TLS_Context" />
     </http:listener-config>
-    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.54:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="traxion-albatros-api-config" api="resource::ab8117f6-d718-4307-b5f7-03262d589cd0:traxion-albatros-api:1.0.55:raml:zip:traxion-albatros-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="traxion-albatros-api-main">
         <http:listener config-ref="traxion-albatros-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -569,7 +569,7 @@ output application/json
         <flow-ref doc:name="Call to orchestrator-post-store-evidence-main" doc:id="75a76c97-a19f-4037-853c-092239905121" name="orchestrator-post-store-evidence-main" />
     </flow>
     <flow name="post:\oms\order:application\json:traxion-albatros-api-config">
-		<flow-ref doc:name="Call to orchestrator-post-create-order-main" doc:id="dc8397d2-06fc-4197-9af1-d1eb524d99bf" name="orchestrator-post-create-order-main" />
+        <flow-ref doc:name="Call to orchestrator-post-create-order-main" doc:id="dc8397d2-06fc-4197-9af1-d1eb524d99bf" name="orchestrator-post-create-order-main" />
     </flow>
     <flow name="post:\salesforce\siam:application\json:traxion-albatros-api-config">
         <ee:transform doc:name="Transform Message">
